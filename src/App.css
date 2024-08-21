@@ -1,38 +1,155 @@
-.App {
+/* This will apply to all scrollable elements */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1); /* This is your faded background color */
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.general-app {
+  height: auto;
+  min-height: 1000px;
+}
+
+/* Specific Styles for the App logo */
+#background-img {
+  background: rgba(0, 0, 0, 0) url("./images/xtowerbackground.png") center
+    center no-repeat;
+  background-size: cover;
+}
+
+#landing-blurb {
+  background-color: grey;
+  width: 800px;
+  height: 500px;
   text-align: center;
+  position: relative;
+  top: 75px;
+  margin-right: auto;
+  margin-left: auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.intro {
+  font-family: "SquareCaps";
+  color: rgb(88, 19, 14);
+  font-size: 55px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.navigation {
+  width: 100%;
+  background-color: rgb(32, 119, 218);
+  z-index: 1;
+  top: 0;
+  left: 0;
+  display: block;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.logo {
+  float: left;
+  /* font-family: "SquareCaps"; */
+  font-size: 30px;
+  margin-left: 10px;
+  margin-top: 13px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.navlist {
+  float: right;
+}
+
+.nav-option {
+  width: auto;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 10px;
+  text-decoration: none;
+  font-family: "Blkchcry";
+  text-align: right;
+  color: rgb(88, 19, 14);
+}
+
+.nav-option:hover {
+  color: wheat;
+}
+
+.menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: grey;
+}
+
+.menu-item {
+  float: left;
+  text-align: center;
+  padding: 16px;
+  text-decoration: none;
+  font-family: "Blkchcry";
+  color: rgb(88, 19, 14);
+}
+
+.menu-item:hover {
+  color: wheat;
+}
+
+.combo-form{
+  width: 50%;
+  padding: 20px;
+  margin: 20px;
+  margin-left: auto;
+  margin-right: auto; 
+  text-align: center;
+  border-radius: 10px;
+  background-color: rgb(32, 119, 218);
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+select {
+
+  padding: 16px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button {
+  background-color: rgb(32, 119, 218);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* 
+.landing-image{
+  height: 300px;
+  width:300px;
+  float: left;
+  margin-left: 10px;
+} */
+
+.forward {
+  overflow: auto;
 }

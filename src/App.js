@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Landing from "./routes/Landing";
+import CreateCombo from "./routes/CreateCombo";
+
+import TopNav from "./components/TopNav";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id="background-img">
+      <div className="general-app">
+        <BrowserRouter>
+          <TopNav />
+          <Routes>
+            <Route exact path="/" Component={Landing} />
+            <Route exact path="/createPage" Component={CreateCombo} />
+            {/* <Route path="/rankingPage" element={<RankingPage />} /> */}
+          </Routes>
+        </BrowserRouter>
+      </div>
     </div>
   );
 }
