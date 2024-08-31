@@ -6,7 +6,7 @@ export default function RachetSelect() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/rachets/rachetlist")
+        axios.get("http://localhost:8080/ratchets/ratchetlist")
             .then(response => {
                 setOptions(response.data);
                 setLoading(false);

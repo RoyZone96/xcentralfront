@@ -18,6 +18,9 @@ export default function TopNav() {
           <NavLink className="nav-option" to="/rankingPage">
             RANKING &nbsp;
           </NavLink>
+          <NavLink className="nav-option" to="/registration">
+            REGISTER &nbsp;
+          </NavLink> start
         </Nav>
       </Navbar>
     </div>

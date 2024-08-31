@@ -1,7 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./routes/Landing";
+import Registration from "./routes/Registration";
 import CreateCombo from "./routes/CreateCombo";
+import RankingPage from "./routes/RankingPage";
 
 import TopNav from "./components/TopNav";
 import "./App.css";
@@ -14,8 +16,9 @@ function App() {
           <TopNav />
           <Routes>
             <Route exact path="/" Component={Landing} />
+            <Route exact path="/registration" Component={Registration} />
             <Route exact path="/createPage" Component={CreateCombo} />
-            {/* <Route path="/rankingPage" element={<RankingPage />} /> */}
+            <Route exact path="/rankingPage" Component={RankingPage} /> 
           </Routes>
         </BrowserRouter>
       </div>
