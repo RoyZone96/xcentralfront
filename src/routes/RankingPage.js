@@ -29,7 +29,7 @@ const RankingPage = () => {
         } else if (sortCriteria === 'losses') {
             return b.losses - a.losses;
         } else if (sortCriteria === 'winRateAverage') {
-            return b.winRateAverage - a.winRateAverage;
+            return b.winRateAvg - a.winRateAvg;
         }
         return 0;
     });
@@ -67,7 +67,7 @@ const RankingPage = () => {
                             <td>{ranking.bit}</td>
                             <td>{ranking.wins}</td>
                             <td>{ranking.losses}</td>
-                            <td>{ranking.winRateAverage}</td>
+                            <td>{ranking.winRateAvg}%</td>
                         </tr>
                     ))}
                 </tbody>
