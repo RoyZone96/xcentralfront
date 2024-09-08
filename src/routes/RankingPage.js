@@ -56,6 +56,7 @@ const RankingPage = () => {
                         <th>Wins</th>
                         <th>Losses</th>
                         <th>Win Rate</th>
+                        <th>Posted By</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,6 +69,7 @@ const RankingPage = () => {
                             <td>{ranking.wins}</td>
                             <td>{ranking.losses}</td>
                             <td>{ranking.winRateAvg}%</td>
+                            <td>{ranking.username}</td>
                         </tr>
                     ))}
                 </tbody>
