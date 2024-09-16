@@ -25,18 +25,39 @@ export default function Login() {
             window.location.reload();
         }
         catch(error){
+            console.error('Error during login:', error);
             alert('Login failed, username or password is incorrect');
         }   
     };
 
-    return(
-        <div className="login">
-            <h2>Login</h2>
-            <form onSubmit={onLogin}>
-                <input type="text" placeholder="Username" onChange={(e) => onInputChange(e, setUsername)} />
-                <input type="password" placeholder="Password" onChange={(e) => onInputChange(e, setPassword)} />
-                <button type="submit">Login</button>
-            </form>
+    return (
+        <div>
+          <form  className="scroll-container" onSubmit={onLogin}>
+            <h1>Login</h1>
+            <div className="form-group">
+              <label htmlFor="username">Username</label>
+              <input
+                type="text"
+                className="form-control"
+                id="username"
+                placeholder="Enter username"
+                value={username}
+                onChange={(e) => onInputChange(e, setUsername)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="Enter password"
+                value={password}
+                onChange={(e) => onInputChange(e, setPassword)}
+              />
+            </div>
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </form>
         </div>
-    )
+      );
 }
