@@ -29,7 +29,7 @@ export default function TopNav() {
               <NavLink className="nav-option" to="/createPage">
                 WORKSHOP &nbsp;
               </NavLink>
-              <LogoutButton />
+              
             </>
           )}
           {/* see the rankings regardless of login status */}
@@ -44,6 +44,11 @@ export default function TopNav() {
               <NavLink className="nav-option" to="/login">
                 LOGIN &nbsp;
               </NavLink>
+            </>
+          )}
+          {hasToken && (
+            <>
+               <LogoutButton />
             </>
           )}
         </Nav>

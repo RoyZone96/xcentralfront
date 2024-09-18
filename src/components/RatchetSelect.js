@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function RachetSelect() {
+export default function RatchetSelect() {
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -9,6 +9,7 @@ export default function RachetSelect() {
         axios.get("http://localhost:8080/ratchets/ratchetlist")
             .then(response => {
                 setOptions(response.data);
+                console.log(response.data);
                 setLoading(false);
             })
             .catch(error => {

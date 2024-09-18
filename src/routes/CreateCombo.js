@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import aimxios from "axios";
 import BitSelect from "../components/BitSelect";
 import BladeSelect from "../components/BladeSelect";
-import RachetSelect from "../components/RatchetSelect";
+import RatchetSelect from "../components/RatchetSelect";
 
 
 export default function CreateCombo(){
@@ -14,8 +13,8 @@ return (
             
             <label htmlFor="bladeSelect">Blade Type:</label>
             <BladeSelect />
-            <label htmlFor="ratchetSelect">Rachet Type:</label>
-            <RachetSelect />
+            <label htmlFor="ratchetSelect">Ratchet Type:</label>
+            <RatchetSelect />
             <label htmlFor="bitSelect">Bit Type:</label>
             <BitSelect />
             <button type="submit">Create Combo</button>
