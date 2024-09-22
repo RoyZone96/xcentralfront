@@ -11,54 +11,54 @@ export default function AccountPage (){
     const navigate = useNavigate();
 
   
-  useEffect(() => {
-    const loadUserSubmissions = async () => {
-        try {
+    useEffect(() => {
+        const loadUserSubmissions = async () => {
+          try {
             // Get the token from local storage
             const token = localStorage.getItem('token');
-            
+      
             // Check if token exists
             if (!token) {
-                throw new Error('User is not authenticated');
+              throw new Error('User is not authenticated');
             }
-
+      
             // Decode the token to get the user_id
             const decodedToken = jwtDecode(token);
             console.log('Decoded Token:', decodedToken); // Log the decoded token to inspect its structure
-            const userId = decodedToken.id; // Assuming the token contains the user ID in the 'id' field
-
-            if (!userId) {
-                throw new Error('User ID not found in token');
+      
+            // Extract the username from the decoded token
+            const username = decodedToken.sub; // Ensure the token contains the username in the 'username' field
+      
+            if (!username) {
+              throw new Error('Username not found in token');
             }
-
-            // Set up the headers with the token
+      
             const headers = {
-                'Authorization': `Bearer ${token}`
+              'Authorization': `Bearer ${token}`
             };
-
+      
             // Make the API call to fetch submissions
-            const response = await axios.get(`http://localhost:8080/submissions/sublist/user_id/${userId}`, { headers });
-
+            const response = await axios.get(`http://localhost:8080/submissions/sublist/username/${username}`, { headers });
+      
             // Handle the response
             const submissions = response.data;
             console.log('User submissions:', submissions);
-
+      
             // Verify that the submissions belong to the user
             if (!Array.isArray(submissions)) {
-                throw new Error('Invalid response format');
+              throw new Error('Invalid response format');
             }
-
+      
             // Update the state with the submissions
             setSubmissions(submissions);
-        } catch (error) {
+          } catch (error) {
             console.error('Error loading user submissions:', error);
             alert('Failed to load submissions');
-        }
-    };
-
-    loadUserSubmissions();
-}, []);
-
+          }
+        };
+      
+        loadUserSubmissions();
+      }, []);
 
 const handleDelete = async (id) => {
   try {

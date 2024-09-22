@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 
-export default function BitSelect() {
+export default function BitSelect({setBitType}) {
     const [options, setOptions] = useState([]);
+    const [option, setOption] = useState("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -21,10 +22,17 @@ export default function BitSelect() {
         return <div>Loading...</div>;
     }
 
+    const handleChange = (event) => {
+        const selectedOption = event.target.value;
+        setOption(selectedOption);
+        setBitType(selectedOption);
+        console.log(event.target.value);
+    }
+
     return (
         <div>
           
-            <select>
+            <select value={option} onChange={handleChange}>
                 {options.map(option => (
                     <option key={option.id} value={option.value}>
                         {option.bit}
