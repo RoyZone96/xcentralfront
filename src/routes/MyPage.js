@@ -67,7 +67,7 @@ const handleDelete = async (id) => {
           'Authorization': `Bearer ${token}`
       };
 
-      await axios.delete(`http://localhost:8080/submissions/${id}`, { headers });
+      await axios.delete(`http://localhost:8080/submissions/id/${id}`, { headers });
       setSubmissions(submissions.filter(submission => submission.id !== id));
   } catch (error) {
       console.error('Error deleting submission:', error);
@@ -83,7 +83,7 @@ const handleUpdate = async (id, wins, losses) => {
       };
 
       const updatedSubmission = { wins, losses };
-      await axios.put(`http://localhost:8080/submissions/${id}`, updatedSubmission, { headers });
+      await axios.put(`http://localhost:8080/submissions/id/${id}`, updatedSubmission, { headers });
       setSubmissions(submissions.map(submission => 
           submission.id === id ? { ...submission, wins, losses } : submission
       ));
