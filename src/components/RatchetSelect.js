@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function RachetSelect() {
+export default function RatchetSelect({ setRatchetType }) {
     const [options, setOptions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [option, setOption] = useState("");
 
     useEffect(() => {
-        axios.get("http://localhost:8080/rachets/rachetlist")
+        axios.get("http://localhost:8080/ratchets/ratchetlist")
             .then(response => {
                 setOptions(response.data);
                 setLoading(false);
@@ -21,10 +22,16 @@ export default function RachetSelect() {
         return <div>Loading...</div>;
     }
 
+    const handleChange = (event) => {
+        const selectedOption = event.target.value;
+        setOption(selectedOption);
+        setRatchetType(selectedOption); // Update the parent component's state
+        console.log(selectedOption);
+    };
+
     return (
         <div>
-  
-            <select>
+            <select value={option} onChange={handleChange}>
                 {options.map(option => (
                     <option key={option.id} value={option.value}>
                         {option.rachet}
