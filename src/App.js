@@ -7,6 +7,7 @@ import RankingPage from "./routes/RankingPage";
 import Login from "./routes/Login";
 import MyPage from "./routes/MyPage";
 import TopNav from "./components/TopNav";
+import Footer from "./components/Footer";
 import "./App.css";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="/createPage" Component={CreateCombo} />
             <Route exact path="/rankingPage" Component={RankingPage} /> 
           </Routes>
+          <Footer />
         </BrowserRouter>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import React from "react";
+import "../styles/Landing.css"
 
-import { NavLink } from "react-router-dom";
 
 export default function Landing() {
   //const hasToken = localStorage.getItem('token');

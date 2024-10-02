@@ -1,6 +1,8 @@
 import {useState} from 'react';
+import "../styles/Login.css";
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
 
 export default function Login() {
@@ -32,10 +34,10 @@ export default function Login() {
 
     return (
         <div>
-          <form  className="scroll-container" onSubmit={onLogin}>
+          <form  className="form-container" onSubmit={onLogin}>
             <h1>Login</h1>
             <div className="form-group">
-              <label htmlFor="username">Username</label>
+              
               <input
                 type="text"
                 className="form-control"
@@ -46,7 +48,6 @@ export default function Login() {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="password">Password</label>
               <input
                 type="password"
                 className="form-control"
@@ -56,6 +57,7 @@ export default function Login() {
                 onChange={(e) => onInputChange(e, setPassword)}
               />
             </div>
+            <Link className="to-register" to="/registration">Don't have an account? Register here</Link>
             <button type="submit" className="btn btn-primary">Submit</button>
           </form>
         </div>

@@ -1,0 +1,32 @@
+.sortbox{
+    text-align: center;
+}
+
+
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+th, td {
+    border: 1px solid #162447;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #0f3460;
+    color: #e94560;
+}
+
+tr:nth-child(even) {
+    background-color: #1f4068;
+}
+
+tr:hover {
+    background-color: #162447;
+}

@@ -1,7 +1,9 @@
 import axios from "axios";
 import bcrypt from "bcryptjs";
-import { useState, useEffect, React } from "react";
+import "../styles/Registration.css";
+import { useState, React } from "react";
 import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function Registration() {
   let navigate = useNavigate();
@@ -77,9 +79,9 @@ export default function Registration() {
   return (
     <div>
       <h1>Registration</h1>
-      <form onSubmit={(e) => onSubmit(e)} className="scroll-container">
+      <form onSubmit={(e) => onSubmit(e)} className="form-container">
         <div className="form-group">
-          <label for="username">Username</label>{" "}
+         
           <input
             type="text"
             className="form-control"
@@ -90,7 +92,7 @@ export default function Registration() {
           />
         </div>
         <div className="form-group">
-          <label for="email">Email address</label>
+      
           <input
             type="email"
             className="form-control"
@@ -100,12 +102,11 @@ export default function Registration() {
             value={email}
             onChange={(e) => onInputChange(e)}
           />
-          <small id="emailHelp" className="form-text text-muted">
+          {/* <small id="emailHelp" className="form-text text-muted">
             We'll never share your email with anyone else.
-          </small>
+          </small> */}
         </div>
         <div className="form-group">
-          <label for="password">Password</label>
           <input
             type="password"
             className="form-control"
@@ -116,7 +117,6 @@ export default function Registration() {
           />
         </div>
         <div className="form-group">
-          <label for="confirmPassword">Confirm Password</label>
           <input
             type="password"
             className="form-control"
@@ -126,6 +126,7 @@ export default function Registration() {
             onChange={(e) => onInputChange(e)}
           />
         </div>
+          <Link className="to-login" to="/login">Already have an account? Login here</Link>
         <button type="submit" className="btn btn-primary">
           Submit
         </button>

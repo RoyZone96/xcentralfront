@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
+import '../styles/RankingPage.css';
 
 const RankingPage = () => {
     const [rankings, setRankings] = useState([]);
@@ -37,7 +38,7 @@ const RankingPage = () => {
     return (
         <div>
             <h1>Ranking</h1>
-            <div>
+            <div className='sortbox'>
                 <label htmlFor="sort-select">Sort by:</label>
                 <select id="sort-select" value={sortCriteria} onChange={handleSortChange}>
                     <option value="wins">Wins</option>
