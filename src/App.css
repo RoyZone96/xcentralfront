@@ -74,21 +74,7 @@
   float: right;
 }
 
-.nav-option {
-  width: auto;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 18px;
-  margin: 10px;
-  text-decoration: none;
-  font-family: "Blkchcry";
-  text-align: right;
-  color: rgb(88, 19, 14);
-}
 
-.nav-option:hover {
-  color: wheat;
-}
 
 .menu {
   list-style-type: none;

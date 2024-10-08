@@ -1,7 +1,6 @@
-.sortbox{
+.sortbox {
     text-align: center;
 }
-
 
 table {
     width: 80%;
@@ -29,4 +28,22 @@ tr:nth-child(even) {
 
 tr:hover {
     background-color: #162447;
+}
+
+@media (max-width: 1024px) {
+    .responsive-table {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 767px) {
+    .responsive-table {
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .responsive-table {
+        font-size: 8px;
+    }
 }

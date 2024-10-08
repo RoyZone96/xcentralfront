@@ -1,6 +1,6 @@
 import axios from "axios";
 import bcrypt from "bcryptjs";
-import "../styles/Registration.css";
+import "./Registration.css";
 import { useState, React } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";

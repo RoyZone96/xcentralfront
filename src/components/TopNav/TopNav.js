@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import LogoutButton from "./Logout";
+import LogoutButton from "../Logout";
+import "./TopNav.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function TopNav() {
@@ -24,12 +25,11 @@ export default function TopNav() {
           {hasToken && (
             <>
               <NavLink className="nav-option" to="/myPage">
-                MY PAGE &nbsp;
+              MY PAGE &nbsp;
               </NavLink>
               <NavLink className="nav-option" to="/createPage">
                 WORKSHOP &nbsp;
               </NavLink>
-              
             </>
           )}
           {/* see the rankings regardless of login status */}
@@ -48,7 +48,7 @@ export default function TopNav() {
           )}
           {hasToken && (
             <>
-               <LogoutButton />
+              <LogoutButton />
             </>
           )}
         </Nav>
