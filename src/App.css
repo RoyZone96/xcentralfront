@@ -30,16 +30,7 @@
   background-size: cover;
 }
 
-#landing-blurb {
-  background-color: grey;
-  width: 800px;
-  height: 500px;
-  text-align: center;
-  position: relative;
-  top: 75px;
-  margin-right: auto;
-  margin-left: auto;
-}
+
 
 .intro {
   font-family: "SquareCaps";

@@ -1,33 +1,110 @@
 .logo {
-    float: left;
-    /* font-family: "SquareCaps"; */
-    font-size: 30px;
-    margin-left: 10px;
-    margin-top: 13px;
+  float: left;
+  /* font-family: "SquareCaps"; */
+  font-size: 30px;
+  margin-left: 10px;
+  margin-top: 13px;
+}
+
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.navlist {
+  float: right;
+}
+
+.nav-option {
+  width: auto;
+  padding: 12px 15px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 15px;
+  text-decoration: none;
+  font-family: "Blkchcry";
+  text-align: right;
+  color: rgb(88, 19, 14);
+}
+
+.nav-option:hover {
+  color: wheat;
+}
+
+/* Add styles for the hamburger menu */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  font-size: 30px;
+  margin: 15px;
+}
+
+.dropdown-menu {
+  display: none;
+  flex-direction: column;
+  background-color: white;
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  width: 200px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu .nav-option {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.dropdown-menu .nav-option:last-child {
+  border-bottom: none;
+}
+
+/* Media query for tablets */
+@media (max-width: 768px) {
+  .logo {
+    font-size: 25px;
+    margin-top: 10px;
   }
-  
-  .clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-  
+
   .navlist {
+    float: none;
+    text-align: center;
+  }
+
+  .nav-option {
+    font-size: 16px;
+    margin: 10px;
+  }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+  .logo {
+    font-size: 20px;
+    margin-top: 8px;
     float: right;
   }
 
-.nav-option {
-    width: auto;
-    padding: 12px 15px;
-    cursor: pointer;
-    font-size: 18px;
-    margin: 15px;
-    text-decoration: none;
-    font-family: "Blkchcry";
-    text-align: right;
-    color: rgb(88, 19, 14);
+  .navlist {
+    display: none;
+    float: none;
+    text-align: center;
+    background-color: rgba(0, 0, 255, 0.7); /* Blue background at 70% opacity */
   }
-  
-  .nav-option:hover {
-    color: wheat;
+
+  .nav-option {
+    font-size: 14px;
+    margin: 5px;
+    padding: 10px 12px;
   }
+
+  .hamburger {
+    display: block;
+  }
+
+  .dropdown-menu {
+    display: flex;
+  }
+}

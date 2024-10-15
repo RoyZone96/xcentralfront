@@ -1,47 +1,73 @@
-import { useState, useEffect } from "react";
-import { Navbar, Nav } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
-import LogoutButton from "../Logout";
-import "./TopNav.css";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
+import LogoutButton from '../Logout';
+import './TopNav.css';
 
-export default function TopNav() {
-  const [userRole, setUserRole] = useState("");
-  useEffect(() => {
-    const role = localStorage.getItem("role");
-    setUserRole(role);
-  }, []);
+const TopNav = ({ hasToken }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const hasToken = localStorage.getItem("token");
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
 
   return (
-    <div className="navigation clearfix">
-      <h1 className="logo">X-Central</h1>
-      <Navbar className="navlist">
-        <Nav className="mr-auto">
-          <NavLink className="nav-option" to="/">
+    <Navbar className="clearfix">
+      <div className="logo">XCentral</div>
+      <div className="hamburger" onClick={toggleMenu}>
+        &#9776;
+      </div>
+      <Nav className="navlist">
+        <NavLink className="nav-option" to="/">
+          HOME &nbsp;
+        </NavLink>
+        {hasToken && (
+          <>
+            <NavLink className="nav-option" to="/createPage">
+              WORKSHOP &nbsp;
+            </NavLink>
+          </>
+        )}
+        <NavLink className="nav-option" to="/rankingPage">
+          RANKING &nbsp;
+        </NavLink>
+        {!hasToken && (
+          <>
+            <NavLink className="nav-option" to="/registration">
+              REGISTER &nbsp;
+            </NavLink>
+            <NavLink className="nav-option" to="/login">
+              LOGIN &nbsp;
+            </NavLink>
+          </>
+        )}
+        {hasToken && (
+          <>
+            <LogoutButton />
+          </>
+        )}
+      </Nav>
+      {menuOpen && (
+        <div className="dropdown-menu">
+          <NavLink className="nav-option" to="/" onClick={toggleMenu}>
             HOME &nbsp;
           </NavLink>
           {hasToken && (
             <>
-              <NavLink className="nav-option" to="/myPage">
-              MY PAGE &nbsp;
-              </NavLink>
-              <NavLink className="nav-option" to="/createPage">
+              <NavLink className="nav-option" to="/createPage" onClick={toggleMenu}>
                 WORKSHOP &nbsp;
               </NavLink>
             </>
           )}
-          {/* see the rankings regardless of login status */}
-          <NavLink className="nav-option" to="/rankingPage">
+          <NavLink className="nav-option" to="/rankingPage" onClick={toggleMenu}>
             RANKING &nbsp;
           </NavLink>
           {!hasToken && (
             <>
-              <NavLink className="nav-option" to="/registration">
+              <NavLink className="nav-option" to="/registration" onClick={toggleMenu}>
                 REGISTER &nbsp;
               </NavLink>
-              <NavLink className="nav-option" to="/login">
+              <NavLink className="nav-option" to="/login" onClick={toggleMenu}>
                 LOGIN &nbsp;
               </NavLink>
             </>
@@ -51,8 +77,10 @@ export default function TopNav() {
               <LogoutButton />
             </>
           )}
-        </Nav>
-      </Navbar>
-    </div>
+        </div>
+      )}
+    </Navbar>
   );
-}
+};
+
+export default TopNav;

@@ -1,0 +1,36 @@
+.newcombo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 50%;
+    height: 100%;
+    background-color: blue;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    flex-direction: column;
+}
+
+.newcombo:hover{
+    background-color: #f0f0f0;
+    color: black;
+}
+
+@media (max-width: 768px) {
+    .newcombo {
+        width: 70%;
+        padding: 15px;
+    }
+}
+
+/* Media query for mobile devices */
+@media (max-width: 600px) {
+    .newcombo {
+        width: 90%;
+        padding: 10px;
+    }
+}
