@@ -8,6 +8,7 @@ import Login from "./routes/Login/Login";
 import MyPage from "./routes/MyPage/MyPage";
 import TopNav from "./components/TopNav/TopNav";
 import Footer from "./components/Footer/Footer";
+import UpdatePassword from "./routes/UpdatePassword/UpdatePassword";
 import "./App.css";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="/myPage" Component={MyPage} />
             <Route exact path="/createPage" Component={CreateCombo} />
             <Route exact path="/rankingPage" Component={RankingPage} />
+            <Route exact path="/updatePassword" Component={UpdatePassword} />
           </Routes>
           <Footer />
         </BrowserRouter>

@@ -77,7 +77,7 @@ export default function Registration() {
 };
 
   return (
-    <div>
+    <div className="container">
       <h1>Registration</h1>
       <form onSubmit={(e) => onSubmit(e)} className="form-container">
         <div className="form-group">

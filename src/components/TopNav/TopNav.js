@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import LogoutButton from '../Logout';
 import './TopNav.css';
 
-const TopNav = ({ hasToken }) => {
+const TopNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasToken, setHasToken] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setHasToken(!!token);
+  }, []);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -25,6 +31,9 @@ const TopNav = ({ hasToken }) => {
           <>
             <NavLink className="nav-option" to="/createPage">
               WORKSHOP &nbsp;
+            </NavLink>
+            <NavLink className="nav-option" to="/myPage">
+              MY PAGE &nbsp;
             </NavLink>
           </>
         )}
@@ -53,12 +62,15 @@ const TopNav = ({ hasToken }) => {
             HOME &nbsp;
           </NavLink>
           {hasToken && (
-            <>
-              <NavLink className="nav-option" to="/createPage" onClick={toggleMenu}>
-                WORKSHOP &nbsp;
-              </NavLink>
-            </>
-          )}
+          <>
+            <NavLink className="nav-option" to="/createPage">
+              WORKSHOP &nbsp;
+            </NavLink>
+            <NavLink className="nav-option" to="/myPage">
+              MY PAGE &nbsp;
+            </NavLink>
+          </>
+        )}
           <NavLink className="nav-option" to="/rankingPage" onClick={toggleMenu}>
             RANKING &nbsp;
           </NavLink>

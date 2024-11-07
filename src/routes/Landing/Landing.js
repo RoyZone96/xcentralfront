@@ -7,7 +7,7 @@ export default function Landing() {
   //const hasToken = localStorage.getItem('token');
 
   return (
-    <div id="landing-blurb">
+    <div className="container" id="landing-blurb">
       <h1 className="intro">Welcome to the X Tower!</h1>
 
       <article className="forward">
@@ -25,6 +25,8 @@ export default function Landing() {
             </a>
           </p>
         </section>
+        <section className="">
+          </section>
       </article>
     </div>
   );

@@ -36,7 +36,7 @@ const RankingPage = () => {
     });
 
     return (
-        <div>
+        <div className='container'>
             <h1>Ranking</h1>
             <div className='sortbox'>
                 <label htmlFor="sort-select">Sort by:</label>
