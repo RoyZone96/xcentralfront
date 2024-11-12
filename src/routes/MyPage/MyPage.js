@@ -95,6 +95,10 @@ export default function AccountPage() {
     navigate('/updatePassword');
   };
 
+  const navigateToUpdateEmail = () => {
+    navigate('/updateEmail');
+  }
+
   // const handlePointsChange = (id, event) => {
   //   const increment = parseInt(event.target.value, 10);
   //   const submission = submissions.find(sub => sub.id === id);
@@ -108,6 +112,7 @@ export default function AccountPage() {
       <div>
         <h2>Account Maintainance</h2>
          <button className='updatePassword' onClick={navigateToUpdatePassword}>Update Password</button>
+         <button className='updateEmail' onClick={navigateToUpdateEmail}>Update Email</button>
          <button className='logout' onClick={LogoutButton}>Logout</button>
       </div>
      

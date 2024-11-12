@@ -9,6 +9,7 @@ import MyPage from "./routes/MyPage/MyPage";
 import TopNav from "./components/TopNav/TopNav";
 import Footer from "./components/Footer/Footer";
 import UpdatePassword from "./routes/UpdatePassword/UpdatePassword";
+import UpdateEmail from "./routes/UpdateEmail/UpdateEmail";
 import "./App.css";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
             <Route exact path="/createPage" Component={CreateCombo} />
             <Route exact path="/rankingPage" Component={RankingPage} />
             <Route exact path="/updatePassword" Component={UpdatePassword} />
+            <Route exact path="/updateEmail" Component={UpdateEmail} />
           </Routes>
           <Footer />
         </BrowserRouter>

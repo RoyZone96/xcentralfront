@@ -23,6 +23,7 @@ export default function Login() {
             console.log(token);
             alert('Login successful');
             navigate('/myPage');
+            window.location.reload();
         } catch (error) {
             console.error('Error during login:', error);
             alert('Login failed, username or password is incorrect');
