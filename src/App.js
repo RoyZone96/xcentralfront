@@ -10,6 +10,7 @@ import TopNav from "./components/TopNav/TopNav";
 import Footer from "./components/Footer/Footer";
 import UpdatePassword from "./routes/UpdatePassword/UpdatePassword";
 import UpdateEmail from "./routes/UpdateEmail/UpdateEmail";
+import ForgotAccount from "./routes/ForgotAccount/ForgotAccount";
 import "./App.css";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
             <Route exact path="/rankingPage" Component={RankingPage} />
             <Route exact path="/updatePassword" Component={UpdatePassword} />
             <Route exact path="/updateEmail" Component={UpdateEmail} />
+            <Route exact path="/forgotAccount" Component={ForgotAccount} />
           </Routes>
           <Footer />
         </BrowserRouter>

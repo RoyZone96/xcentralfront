@@ -113,7 +113,7 @@ export default function AccountPage() {
         <h2>Account Maintainance</h2>
          <button className='updatePassword' onClick={navigateToUpdatePassword}>Update Password</button>
          <button className='updateEmail' onClick={navigateToUpdateEmail}>Update Email</button>
-         <button className='logout' onClick={LogoutButton}>Logout</button>
+          <LogoutButton />
       </div>
      
       <button className="newcombo" onClick={navigateToWorkshop}>Create New Combo</button>
