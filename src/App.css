@@ -1,21 +1,15 @@
-/* This will apply to all scrollable elements */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
 }
-
-/* Track */
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1); /* This is your faded background color */
+  background: #e0e6eb; /* metallic silver */
 }
-
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, #2563a6 60%, #bfc9d1 100%);
 }
-
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.7);
+  background: linear-gradient(135deg, #1e3a5c 60%, #e0e6eb 100%);
 }
 
 .general-app {
@@ -30,22 +24,20 @@
   background-size: cover;
 }
 
-
+.content-body {
+  padding-top: 100px;    /* space for TopNav */
+  padding-bottom: 70px; /* space for footer, adjust as needed */
+  min-height: calc(100vh - 150px); /* ensures content fills the screen */
+}
 
 .intro {
   font-family: "SquareCaps";
-  color: rgb(88, 19, 14);
+  color: #2563a6; /* Deep blue */
   font-size: 55px;
+  text-shadow: 1px 1px 8px #bfc9d1;
 }
 
-.navigation {
-  width: 100%;
-  background-color: rgb(32, 119, 218);
-  z-index: 1;
-  top: 0;
-  left: 0;
-  display: block;
-}
+
 
 .container {
   width: 100%;
@@ -66,65 +58,76 @@
 
 
 
+/* Dropdown Menu */
+.dropdown-menu {
+  background: linear-gradient(120deg, #2563a6 80%, #bfc9d1 100%);
+  box-shadow: 0 8px 16px #bfc9d1;
+}
+
+/* Menu (legacy, if used elsewhere) */
 .menu {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: grey;
+  background-color: #bfc9d1;
 }
-
 .menu-item {
   float: left;
   text-align: center;
   padding: 16px;
   text-decoration: none;
   font-family: "Blkchcry";
-  color: rgb(88, 19, 14);
+  color: #2563a6;
 }
-
 .menu-item:hover {
-  color: wheat;
+  color: #2563a6;
+  background: #e0e6eb;
 }
 
-.combo-form{
+/* Combo Form */
+.combo-form {
   width: 50%;
   padding: 20px;
-  margin: 20px;
-  margin-left: auto;
-  margin-right: auto; 
+  margin: 20px auto;
   text-align: center;
   border-radius: 10px;
-  background-color: rgb(32, 119, 218);
-  color: white;
+  background: linear-gradient(120deg, #2563a6 80%, #bfc9d1 100%);
+  color: #f8fafc;
+  box-shadow: 0 2px 8px #bfc9d1;
 }
 
+/* Select Inputs */
 select {
-
   padding: 16px 20px;
   margin: 8px 0;
   display: inline-block;
-  border: 1px solid #ccc;
+  border: 1px solid #bfc9d1;
   border-radius: 4px;
   box-sizing: border-box;
+  background: #f8fafc;
+  color: #2563a6;
 }
 
+/* Buttons */
 button {
-  background-color: rgb(32, 119, 218);
-  color: white;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
   padding: 14px 20px;
   margin: 8px 0;
   cursor: pointer;
   border-radius: 10px;
+  border: none;
+  font-weight: bold;
+  box-shadow: 0 2px 6px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+}
+button:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
 }
 
-/* 
-.landing-image{
-  height: 300px;
-  width:300px;
-  float: left;
-  margin-left: 10px;
-} */
+
 
 .forward {
   overflow: auto;

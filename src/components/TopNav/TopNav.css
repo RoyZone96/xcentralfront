@@ -1,19 +1,18 @@
+.navigation,
 .navbar {
-  background-color: rgb(255, 255, 255);
-  color: rgb(88, 19, 14);
-  height: 50px;
   width: 100%;
-  position: fixed;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #f8fafc;
+  z-index: 1;
   top: 0;
-  z-index: 1000;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  left: 0;
+  display: block;
+  box-shadow: 0 2px 8px #bfc9d1;
 }
 
 .logo {
   float: left;
   font-size: 30px;
-  margin-left: 10px;
-  margin-top: 13px;
 }
 
 .clearfix::after {
@@ -27,18 +26,25 @@
 }
 
 .nav-option {
-  width: auto;
-  margin-top: 15px;
   font-size: 18px;
   margin: 15px;
   text-decoration: none;
   font-family: "Blkchcry";
+  color: #f8fafc;
   text-align: right;
-  color: rgb(88, 19, 14);
+  transition: color 0.2s;
 }
 
 .nav-option:hover {
-  color: wheat;
+  color: #bfc9d1;
+}
+
+.logo-img{
+
+ width: 110px;      /* Increase width */
+  height: 150px;     /* Increase height */
+  vertical-align: middle;
+  object-fit: contain;
 }
 
 

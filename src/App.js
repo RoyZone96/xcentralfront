@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./routes/Landing/Landing";
 import Registration from "./routes/Registration/Registration";
-import CreateCombo from "./routes/CreateCombo";
+import CreateCombo from "./components/CreateCombo";
 import RankingPage from "./routes/RankingPage/RankingPage";
 import Login from "./routes/Login/Login";
 import MyPage from "./routes/MyPage/MyPage";
@@ -11,6 +11,9 @@ import Footer from "./components/Footer/Footer";
 import UpdatePassword from "./routes/UpdatePassword/UpdatePassword";
 import UpdateEmail from "./routes/UpdateEmail/UpdateEmail";
 import ForgotAccount from "./routes/ForgotAccount/ForgotAccount";
+import OtpEntry from "./routes/OtpEntry/OtpEntry";
+import NewPassword from "./routes/NewPassword/NewPassword";
+
 import "./App.css";
 
 function App() {
@@ -19,6 +22,7 @@ function App() {
       <div className="general-app">
         <BrowserRouter>
           <TopNav />
+          <div className="content-body">
           <Routes>
             <Route exact path="/" Component={Landing} />
             <Route exact path="/login" Component={Login} />
@@ -29,7 +33,11 @@ function App() {
             <Route exact path="/updatePassword" Component={UpdatePassword} />
             <Route exact path="/updateEmail" Component={UpdateEmail} />
             <Route exact path="/forgotAccount" Component={ForgotAccount} />
+            <Route exact path="/otpEntry" Component={OtpEntry} />
+            <Route exact path="/newPassword" Component={NewPassword} />
+    
           </Routes>
+          </div>
           <Footer />
         </BrowserRouter>
       </div>

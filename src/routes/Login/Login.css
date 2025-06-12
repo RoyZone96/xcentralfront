@@ -11,6 +11,12 @@
   background-color: rgba(249, 249, 249, 0.5); /* 50% opacity */
 }
 
+.links{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 /* Styles for tablets (768px to 1024px) */
 @media (max-width: 1024px) {
   .form-container {

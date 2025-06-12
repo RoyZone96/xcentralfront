@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import LogoutButton from '../Logout';
 import './TopNav.css';
+import logo from '../../images/logo.png'; 
 
 const TopNav = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -19,7 +20,7 @@ const TopNav = () => {
 
   return (
     <Navbar className="clearfix">
-      <div className="logo">XCentral</div>
+      <div className="logo"></div>
       <div className="hamburger" onClick={toggleMenu}>
         &#9776;
       </div>

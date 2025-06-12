@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
-import BitSelect from "../components/BitSelect";
-import BladeSelect from "../components/BladeSelect";
-import RatchetSelect from "../components/RatchetSelect";
+import BitSelect from "./BitSelect";
+import BladeSelect from "./BladeSelect";
+import RatchetSelect from "./RatchetSelect";
 
 export default function CreateCombo() {
     const [bit, setBit] = useState("");
