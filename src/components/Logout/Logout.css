@@ -1,0 +1,18 @@
+.logout-btn {
+  display: inline-block;
+  padding: 6px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
+  border: none;
+  margin: 0 10px;
+  vertical-align: middle;
+  box-shadow: 0 1px 4px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}

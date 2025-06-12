@@ -12,6 +12,11 @@
   background: linear-gradient(135deg, #1e3a5c 60%, #e0e6eb 100%);
 }
 
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .general-app {
   height: auto;
   min-height: 1000px;
@@ -23,11 +28,13 @@
     center no-repeat;
   background-size: cover;
 }
-
 .content-body {
   padding-top: 100px;    /* space for TopNav */
-  padding-bottom: 70px; /* space for footer, adjust as needed */
-  min-height: calc(100vh - 150px); /* ensures content fills the screen */
+  padding-bottom: 70px;  /* space for footer, adjust as needed */
+  min-height: calc(100vh - 150px);
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 .intro {

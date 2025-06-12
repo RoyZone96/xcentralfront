@@ -1,36 +1,145 @@
-.newcombo{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 50%;
-    height: 100%;
-    background-color: blue;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+h1{
+    font-size: 3.5rem;           /* Larger font size for main heading */
+    margin-bottom: 24px;
+    color: #2563a6;              /* Primary color for headings */
+    text-shadow: 1px 1px 8px #bfc9d1, 0 2px 12px #fff; /* Add metallic/silver/white shadow for legibility */
+}
+
+h1, h2 {
+  color: #2563a6;              /* Primary color for headings */
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+  text-shadow: 1px 1px 8px #bfc9d1, 0 2px 12px #fff; /* Add metallic/silver/white shadow for legibility */
+
+}
+
+.account-actions {
+  display: flex;
+  flex-direction: row;         /* Inline actions */
+  align-items: center;
+  gap: 24px;                   /* Space between logout and update buttons */
+  margin-bottom: 24px;
+  padding: 18px 24px;
+}
+
+.update-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 18px;
+  justify-content: center;   /* Center the buttons horizontally */
+  align-items: center;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.input-field {
+  width: 100%;
+  max-width: 30px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #bfc9d1;
+  background: #f8fafc;
+  color: #2563a6;
+  box-shadow: 0 1px 2px #bfc9d1;
+}
+
+.update-btn {
+  border-radius: 10px;        /* More squared look */
+  padding: 18px 18px;         /* Make buttons more square */
+  aspect-ratio: 1 / 1;        /* Ensures square shape if possible */
+  min-width: 70px;
+  min-height: 70px;
+  font-weight: bold;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 1px 4px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.update-btn:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}
+
+.small-input {
+  width: 60px !important;
+  min-width: 0;
+  padding: 4px 8px;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #bfc9d1;
+  background: #f8fafc;
+  color: #2563a6;
+  box-shadow: 0 1px 2px #bfc9d1;
+}
+
+.newcombo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  width: 50%;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  border-radius: 10px;
+  box-shadow: 0 0 10px #bfc9d1;
+  padding: 20px;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  transition: background 0.2s, color 0.2s;
+  border: none;
+}
+
+.newcombo:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}
+
+.delete-button {
+  background: linear-gradient(90deg, #a62c2c 70%, #bfc9d1 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: bold;
+  box-shadow: 0 1px 4px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+}
+
+.delete-button:hover {
+  background: linear-gradient(90deg, #7a1c1c 70%, #e0e6eb 100%);
+  color: #a62c2c;
+}
+
+@media (max-width: 900px) {
+  .account-actions {
     flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px;
+  }
+  .update-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .newcombo {
+    width: 80%;
+    padding: 15px;
+    font-size: 16px;
+  }
 }
 
-.newcombo:hover{
-    background-color: #f0f0f0;
-    color: black;
-}
-
-@media (max-width: 768px) {
-    .newcombo {
-        width: 70%;
-        padding: 15px;
-    }
-}
-
-/* Media query for mobile devices */
 @media (max-width: 600px) {
-    .newcombo {
-        width: 90%;
-        padding: 10px;
-    }
+  .newcombo {
+    width: 98%;
+    padding: 10px;
+    font-size: 15px;
+  }
 }
