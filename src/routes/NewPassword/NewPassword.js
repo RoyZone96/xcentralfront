@@ -6,6 +6,7 @@ import axios from "axios";
 export default function NewPassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmOtp, setConfirmOtp] = useState("");
   const navigate = useNavigate();
 
   const handleNewPassword = async (event) => {
@@ -16,12 +17,13 @@ export default function NewPassword() {
       };
   
       const payload = {
-        password: password,
+        otp: confirmOtp,
+        newPassword: password,
         confirmPassword: confirmPassword,
       };
   
       console.log("Sending request to update password:", payload);
-      const response = await axios.put(
+      const response = await axios.post(
         `http://localhost:8080/forgotPassword/resetPassword`,
         payload,
         { headers }
@@ -35,13 +37,20 @@ export default function NewPassword() {
       }
     } catch (error) {
       console.error("Error during password update:", error);
-      alert("Password update failed");
+      alert("Password update failed: " + error);
     }
   };
   return (
     <section className="container">
-      <h1>NewPassword</h1>
+      <h1>New Password</h1>
       <form className="form-container" onSubmit={handleNewPassword}>
+       <input 
+       type="text"
+        value={confirmOtp}
+        placeholder="Enter OTP once more to confirm"
+        onChange={(event) => setConfirmOtp(event.target.value)}
+       />
+       
         <input
           type="password"
           value={password}

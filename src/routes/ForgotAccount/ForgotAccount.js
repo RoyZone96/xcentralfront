@@ -4,15 +4,14 @@ import "./ForgotAccount.css";
 
 const ForgotAccount = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
 
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8080/forgotPassword/verifyEmail/${ email }`);
-      setMessage(response.data);
+      const response = await axios.post(`http://localhost:8080/forgotPassword/verifyMail/${email}`);
+      alert(response.data);
     } catch (error) {
-      setMessage("Error resetting password");
+      alert("Error resetting password");
     }
   };
   
@@ -33,7 +32,7 @@ const ForgotAccount = () => {
         </div>
         <button type="submit">Submit</button>
       </form>
-      {message && <p>{message}</p>}
+
     </div>
   );
 };
