@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import BitSelect from "./BitSelect";
-import BladeSelect from "./BladeSelect";
-import RatchetSelect from "./RatchetSelect";
+import { useNavigate } from "react-router-dom";
+import BitSelect from "../../components/BitSelect";
+import BladeSelect from "../../components/BladeSelect";
+import RatchetSelect from "../../components/RatchetSelect";
+import "./CreateCombo.css";
 
 export default function CreateCombo() {
-  const [bit, setBit] = useState("");
-  const [blade, setBlade] = useState("");
-  const [ratchet, setRatchet] = useState("");
+  const [bit, setBit] = useState("Ball");
+  const [blade, setBlade] = useState("Black Shell");
+  const [ratchet, setRatchet] = useState("2-60");
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     console.log("Bit: ", bit);
@@ -62,6 +65,7 @@ export default function CreateCombo() {
       // Handle the response
       console.log("Submission response:", response.data);
       alert("Combo created successfully!");
+      navigate("/myPage"); // Redirect to MyPage after successful submission
     } catch (error) {
       console.error("Error creating combo:", error);
       alert("Failed to create combo");

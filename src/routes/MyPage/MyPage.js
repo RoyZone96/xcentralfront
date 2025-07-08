@@ -10,7 +10,11 @@ import "./MyPage.css";
 export default function AccountPage() {
   const [submissions, setSubmissions] = useState([]);
   const [userName, setUserName] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+
+const BEYS_ON_PAGE = 10; // Number of submissions to display per page
+
 
   useEffect(() => {
     const loadUserSubmissions = async () => {
@@ -112,6 +116,12 @@ export default function AccountPage() {
     navigate("/updateEmail");
   };
 
+  const totalPages = Math.ceil(submissions.length / BEYS_ON_PAGE);
+  const paginatedSubmissions = submissions.slice(
+    (currentPage - 1) * BEYS_ON_PAGE,
+    currentPage * BEYS_ON_PAGE
+  );
+
   return (
     <div>
       <h1>Welcome, {userName}</h1>
@@ -192,6 +202,20 @@ export default function AccountPage() {
           ))}
         </tbody>
       </Table>
+      {totalPages > 1 && (
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i + 1}
+              className={`page-button ${currentPage === i + 1 ? 'active' : ''}`}
+              onClick={() => setCurrentPage(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
+
     </div>
   );
 }

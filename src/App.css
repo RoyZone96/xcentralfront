@@ -29,7 +29,7 @@ html, body {
   background-size: cover;
 }
 .content-body {
-  padding-top: 100px;    /* space for TopNav */
+  padding-top: 20px;    /* space for TopNav */
   padding-bottom: 70px;  /* space for footer, adjust as needed */
   min-height: calc(100vh - 150px);
   width: 100%;
@@ -104,17 +104,8 @@ html, body {
   box-shadow: 0 2px 8px #bfc9d1;
 }
 
-/* Select Inputs */
-select {
-  padding: 16px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #bfc9d1;
-  border-radius: 4px;
-  box-sizing: border-box;
-  background: #f8fafc;
-  color: #2563a6;
-}
+
+
 
 /* Buttons */
 button {
@@ -138,4 +129,148 @@ button:hover {
 
 .forward {
   overflow: auto;
+}
+
+
+
+.form-container h1 {
+  text-align: center;
+  color: #2563a6;
+  margin-bottom: 18px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 6px 0 12px 0;
+  border: 1px solid #bfc9d1;
+  border-radius: 8px;
+  background: #f8fafc;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+
+.form-container input[type="text"]:focus,
+.form-container input[type="password"]:focus {
+  border: 1.5px solid #2563a6;
+  outline: none;
+}
+
+.form-container label {
+  font-weight: 500;
+  color: #2563a6;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.form-container button[type="submit"] {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 8px;
+}
+
+.form-container button[type="submit"]:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}
+
+.form-container .links {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.form-container .links a {
+  color: #2563a6;
+  text-decoration: underline;
+  margin: 0 4px;
+  font-size: 0.98rem;
+}
+
+
+/* Mobile and Tablet Responsiveness */
+@media (max-width: 900px) {
+  .combo-form {
+    width: 90%;
+    padding: 12px;
+  }
+  .content-body {
+    padding-top: 12px;
+    padding-bottom: 60px;
+    min-height: unset;
+  }
+  .form-container {
+    max-width: 98vw;
+    padding: 18px 8px;
+  }
+  .intro {
+    font-size: 2.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .combo-form {
+    width: 98vw;
+    padding: 8px;
+    font-size: 1rem;
+  }
+  .form-container {
+    max-width: 100vw;
+    padding: 10px 2vw;
+  }
+  .intro {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  .updates-section, .updates-list, .update-category {
+    flex-direction: column !important;
+    min-width: unset !important;
+    width: 100% !important;
+  }
+  .container {
+    padding-top: 18px;
+  }
+  button,
+  .form-container button[type="submit"] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 10px 0;
+  }
+  .combo-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .combo-label {
+    text-align: left;
+    margin-bottom: 2px;
+  }
+  .combo-select select {
+    width: 100%;
+    min-width: 0;
+    font-size: 1rem;
+  }
+  th, td {
+    font-size: 0.95rem;
+    padding: 4px;
+  }
+}
+
+/* Make tables scrollable on small screens */
+@media (max-width: 600px) {
+  table, .table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }

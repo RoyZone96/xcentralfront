@@ -7,6 +7,9 @@ const RankingPage = () => {
     const [rankings, setRankings] = useState([]);
     const [sortCriteria, setSortCriteria] = useState('winRateAverage');
     const [loading, setLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const RANKS_ON_PAGE = 10; // Number of ranks to display per page
 
     useEffect(() => {
         axios.get("http://localhost:8080/submissions/sublist")
@@ -35,6 +38,16 @@ const RankingPage = () => {
         return 0;
     });
 
+    const totalPages = Math.ceil(sortedRankings.length / RANKS_ON_PAGE);
+    const paginatedRankings = sortedRankings.slice(
+        (currentPage - 1) * RANKS_ON_PAGE,
+        currentPage * RANKS_ON_PAGE
+    );
+
+    const handlePageChange = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    }
+
     return (
         <div className='container'>
             <h1>Ranking</h1>
@@ -61,7 +74,7 @@ const RankingPage = () => {
                 </tr>
             </thead>
             <tbody>
-                {sortedRankings.map((ranking, index) => (
+                {paginatedRankings.map((ranking, index) => (
                     <tr key={ranking.id}>
                         <td>{index + 1}</td>
                         <td>{ranking.blade}</td>
@@ -75,6 +88,19 @@ const RankingPage = () => {
                 ))}
             </tbody>
         </Table>}
+        {totalPages > 1 && (
+            <div className='pagination'>
+                {Array.from({ length: totalPages }, (_, i) => (
+                    <button
+                        key={i + 1}
+                        className={`page-button ${currentPage === i + 1 ? 'active' : ''}`}
+                        onClick={() => handlePageChange(i + 1)}
+                    >
+                        {i + 1}
+                    </button>
+                ))}
+            </div>
+        )}
         </div>
     );
 };

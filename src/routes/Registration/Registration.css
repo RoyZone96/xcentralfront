@@ -4,14 +4,7 @@ h1 {
   color: #333;
 }
 
-.form-container {
-  margin: 0 auto;
-  width: 50%;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-}
+
 
 .form-group {
   margin-bottom: 1rem;
@@ -47,4 +40,67 @@ button{
     border-radius: 0.25rem;
     cursor: pointer;
     transition: color 0.15s;
+}
+
+.form-container {
+  max-width: 540px;      /* Increased width for a wider form */
+  margin: 40px auto;
+  padding: 32px 28px;    /* Slightly more padding for balance */
+  background: linear-gradient(120deg, #f8fafc 0%, #e0e6eb 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #bfc9d1;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-sizing: border-box;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #bfc9d1;
+  border-radius: 8px;
+  background: #f8fafc;
+  font-size: 1rem;
+  box-sizing: border-box;
+  margin: 0;
+  display: block;
+}
+
+.form-control:focus {
+  border: 1.5px solid #2563a6;
+  outline: none;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 8px;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}
+
+.to-login {
+  display: block;
+  text-align: center;
+  margin-bottom: 12px;
+  color: #2563a6;
+  text-decoration: underline;
+  font-size: 0.98rem;
 }

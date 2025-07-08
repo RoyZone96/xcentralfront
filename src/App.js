@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./routes/Landing/Landing";
 import Registration from "./routes/Registration/Registration";
-import CreateCombo from "./components/CreateCombo";
+import CreateCombo from "./routes/CreateCombo/CreateCombo";
 import RankingPage from "./routes/RankingPage/RankingPage";
 import Login from "./routes/Login/Login";
 import MyPage from "./routes/MyPage/MyPage";

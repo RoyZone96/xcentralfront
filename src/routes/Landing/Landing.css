@@ -1,4 +1,45 @@
-/* Base styles for the article */
+
+/* Add to Landing.css */
+.updates-section {
+  margin-top: 32px;
+  padding: 18px 16px;
+  background: #f8fafc;
+  border-radius: 10px;
+  box-shadow: 0 1px 6px #bfc9d1;
+}
+
+.updates-section h2 {
+  color: #2563a6;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.updates-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: space-around;
+}
+
+.update-category {
+  min-width: 220px;
+}
+
+.update-category h3 {
+  color: #1f4068;
+  margin-bottom: 8px;
+}
+
+.update-category ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.update-category li {
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 1rem;
+}
 
 /* Base styles for the article */
 article {

@@ -38,10 +38,11 @@ export default function Login() {
       <form className="form-container" onSubmit={onLogin}>
         <h1>Login</h1>
         <div>
-          <label htmlFor="username">Username</label>
+         
           <input
             type="text"
             id="username"
+            placeholder="Username"
             value={username}
             onChange={(e) => onInputChange(e, setUsername)}
             required
@@ -52,6 +53,7 @@ export default function Login() {
           <input
             type="password"
             id="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => onInputChange(e, setPassword)}
             required

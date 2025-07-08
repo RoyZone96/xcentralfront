@@ -1,0 +1,72 @@
+.combo-form {
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 28px 24px;
+  background: linear-gradient(120deg, #f8fafc 0%, #e0e6eb 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #bfc9d1;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.combo-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 18px;
+}
+
+.combo-label {
+  min-width: 110px;
+  font-weight: 500;
+  color: #2563a6;
+  text-align: right;
+}
+
+.combo-select {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.combo-select select {
+  width: 100%;
+  min-width: 160px;
+  max-width: 260px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #bfc9d1;
+  background: #f8fafc;
+  color: #2563a6;
+  font-size: 1rem;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: border 0.2s;
+}
+
+.combo-select select:focus {
+  border: 1.5px solid #2563a6;
+  outline: none;
+}
+
+.combo-form button[type="submit"] {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 1px 4px #bfc9d1;
+  transition: background 0.2s, color 0.2s;
+  margin-top: 18px;
+}
+
+.combo-form button[type="submit"]:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}

@@ -78,10 +78,9 @@ export default function Registration() {
 
   return (
     <div className="container">
-      <h1>Registration</h1>
-      <form onSubmit={(e) => onSubmit(e)} className="form-container">
+      <form onSubmit={(e) => onSubmit(e)} className="form-container"> 
+        <h1>Registration</h1>
         <div className="form-group">
-         
           <input
             type="text"
             className="form-control"
@@ -92,7 +91,6 @@ export default function Registration() {
           />
         </div>
         <div className="form-group">
-      
           <input
             type="email"
             className="form-control"
