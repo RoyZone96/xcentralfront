@@ -29,7 +29,30 @@ export default function Login() {
       window.location.reload();
     } catch (error) {
       console.error("Error during login:", error);
-      alert("Login failed, username or password is incorrect");
+
+      // Check if the error response contains information about disabled account
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message || error.response.data;
+        const errorString = String(errorMessage || "").toLowerCase();
+
+        // Check for disabled account messages
+        if (
+          errorString.includes("disabled") ||
+          errorString.includes("not enabled") ||
+          errorString.includes("account not activated") ||
+          error.response.status === 403
+        ) {
+          alert(
+            "Your account is disabled. Please check your email and verify your account before logging in."
+          );
+        } else {
+          alert(
+            errorMessage || "Login failed, username or password is incorrect"
+          );
+        }
+      } else {
+        alert("Login failed, username or password is incorrect");
+      }
     }
   };
 
@@ -38,7 +61,6 @@ export default function Login() {
       <form className="form-container" onSubmit={onLogin}>
         <h1>Login</h1>
         <div>
-         
           <input
             type="text"
             id="username"
@@ -61,10 +83,10 @@ export default function Login() {
         </div>
         <button type="submit">Login</button>
         <div className="links">
-            <span>
-            <Link to="/registration">Register</Link> | <Link to="/forgotAccount">Forgot password?</Link>
-            </span>
-          
+          <span>
+            <Link to="/registration">Register</Link> |{" "}
+            <Link to="/forgotAccount">Forgot password?</Link>
+          </span>
         </div>
       </form>
     </section>

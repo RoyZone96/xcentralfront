@@ -1,0 +1,31 @@
+.email-confirmed-container {
+  max-width: 400px;
+  margin: 60px auto;
+  padding: 32px 24px;
+  background: #f8fafc;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #bfc9d1;
+  text-align: center;
+}
+.email-confirmed-container h1 {
+  color: #2563a6;
+  margin-bottom: 18px;
+}
+.email-confirmed-container p {
+  margin-bottom: 24px;
+  color: #333;
+}
+.login-link {
+  display: inline-block;
+  padding: 10px 24px;
+  background: linear-gradient(90deg, #2563a6 70%, #bfc9d1 100%);
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.2s, color 0.2s;
+}
+.login-link:hover {
+  background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
+  color: #2563a6;
+}

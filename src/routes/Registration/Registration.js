@@ -53,7 +53,7 @@ export default function Registration() {
         const userWithHashedPassword = { ...user, password: hashedPassword, role: "user" };
 
         await axios.post("http://localhost:8080/users/newuser", userWithHashedPassword);
-        alert("User registered successfully");
+        alert("User registered successfully. Please check your email to confirm your account.");
         navigate("/");
       } catch (error) {
         if (error.response) {

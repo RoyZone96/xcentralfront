@@ -2,7 +2,8 @@
     background-color: #f8f9fa;
     padding: 1rem;
     text-align: center;
-    position: relative;
-    bottom: 0;
+    position: static;      /* Remove absolute/relative positioning */
     width: 100%;
-  }
+    box-sizing: border-box;
+    margin-top: auto;      /* Push footer to bottom in flex layout */
+}

@@ -18,8 +18,10 @@ html, body {
 }
 
 .general-app {
+     display: flex;
+    flex-direction: column;
   height: auto;
-  min-height: 1000px;
+  min-height: 100vh;
 }
 
 /* Specific Styles for the App logo */
@@ -35,6 +37,7 @@ html, body {
   width: 100%;
   box-sizing: border-box;
   margin: 0;
+  flex: 1 0 auto; /* Allow content to grow and fill available space */
 }
 
 .intro {
