@@ -32,10 +32,19 @@ export default function AccountPage() {
           throw new Error("Username not found in token");
         }
 
-        // Check if user is admin from token
-        const userRoles = decodedToken.roles || decodedToken.authorities || [];
-        const adminStatus =
-          userRoles.includes("ADMIN") || userRoles.includes("ROLE_ADMIN");
+        // Check if user is admin from token (robust for array or string)
+        console.log("Decoded JWT token:", decodedToken);
+        let userRoles =
+          decodedToken.roles ||
+          decodedToken.authorities ||
+          decodedToken.role ||
+          [];
+        if (typeof userRoles === "string") {
+          userRoles = [userRoles];
+        }
+        const adminStatus = userRoles
+          .map((r) => r.toUpperCase())
+          .some((r) => r === "ADMIN" || r === "ROLE_ADMIN");
         setIsAdmin(adminStatus);
 
         localStorage.setItem("username", username);
@@ -156,16 +165,16 @@ export default function AccountPage() {
       const formData = new FormData();
       formData.append("profilePicture", file);
 
-  const response = await axios.post(
-    `http://localhost:8080/users/${userName}/profile-image/`,
-    formData,
-    {
-      headers: {
-        ...headers,
-        "Content-Type": "multipart/form-data",
-      },
-  }
-);
+      const response = await axios.post(
+        `http://localhost:8080/users/${userName}/profile-image/`,
+        formData,
+        {
+          headers: {
+            ...headers,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.data) {
         setProfilePictureUrl(response.data);
@@ -254,7 +263,7 @@ export default function AccountPage() {
             {isAdmin && (
               <button
                 className="card-btn admin-btn"
-                onClick={() => navigate("/admin")}
+                onClick={() => navigate("/adminPage")}
               >
                 Admin Panel
               </button>

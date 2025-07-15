@@ -13,6 +13,7 @@ import UpdateEmail from "./routes/UpdateEmail/UpdateEmail";
 import ForgotAccount from "./routes/ForgotAccount/ForgotAccount";
 import OtpEntry from "./routes/OtpEntry/OtpEntry";
 import NewPassword from "./routes/NewPassword/NewPassword";
+import AdminPage from "./routes/AdminPage/AdminPage";
 import EmailConfirmed from "./routes/EmailConfirmed/EmailConfirmed";
 
 import "./App.css";
@@ -37,6 +38,7 @@ function App() {
             <Route exact path="/otpEntry" Component={OtpEntry} />
             <Route exact path="/newPassword" Component={NewPassword} />
             <Route exact path="/verify" Component={EmailConfirmed} />
+            <Route exact path="/adminPage" Component={AdminPage} />
           </Routes>
           </div>
           <Footer />
