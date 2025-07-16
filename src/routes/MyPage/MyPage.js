@@ -75,7 +75,9 @@ export default function AccountPage() {
             { headers }
           );
           if (profileResponse.data) {
-            setProfilePictureUrl(profileResponse.data);
+            // Add timestamp to prevent caching issues
+            const timestampedUrl = `${profileResponse.data}?t=${Date.now()}`;
+            setProfilePictureUrl(timestampedUrl);
           }
         } catch (profileError) {
           console.log(
@@ -163,10 +165,10 @@ export default function AccountPage() {
       };
 
       const formData = new FormData();
-      formData.append("profilePicture", file);
+      formData.append("file", file);
 
       const response = await axios.post(
-        `http://localhost:8080/users/${userName}/profile-image/`,
+        `http://localhost:8080/users/${userName}/profile-image`,
         formData,
         {
           headers: {
@@ -177,7 +179,21 @@ export default function AccountPage() {
       );
 
       if (response.data) {
-        setProfilePictureUrl(response.data);
+        // After successful upload, fetch the updated profile picture URL
+        try {
+          const profileResponse = await axios.get(
+            `http://localhost:8080/users/profile-picture/${userName}`,
+            { headers }
+          );
+          if (profileResponse.data) {
+            // Add timestamp to force browser to reload the image
+            const timestampedUrl = `${profileResponse.data}?t=${Date.now()}`;
+            setProfilePictureUrl(timestampedUrl);
+          }
+        } catch (fetchError) {
+          console.error("Error fetching updated profile picture:", fetchError);
+          // Still show success message even if fetch fails
+        }
         alert("Profile picture updated successfully!");
       }
     } catch (error) {
@@ -289,7 +305,7 @@ export default function AccountPage() {
           </tr>
         </thead>
         <tbody>
-          {submissions.map((submission) => (
+          {paginatedSubmissions.map((submission) => (
             <tr key={submission.id}>
               <td>{submission.blade}</td>
               <td>{submission.ratchet}</td>

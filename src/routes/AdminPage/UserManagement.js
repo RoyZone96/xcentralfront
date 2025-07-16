@@ -33,35 +33,40 @@ export default function UserManagement() {
 
   const handleBanToggle = async (username, shouldBan) => {
     try {
-      const endpoint = shouldBan ? "ban" : "unban";
-      await axios.put(`http://localhost:8080/users/${username}/${endpoint}`);
-      fetchUsers(currentPage);
-      alert(`User ${username} has been ${shouldBan ? "banned" : "unbanned"}!`);
-    } catch (error) {
-      console.error(
-        `Error ${shouldBan ? "banning" : "unbanning"} user:`,
-        error
+      const response = await axios.put(
+        `http://localhost:8080/admin/users/${username}/toggle-status`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
-      alert(`Failed to ${shouldBan ? "ban" : "unban"} user`);
+      fetchUsers(currentPage);
+      // The backend returns a message, we can use it or create our own
+      alert(response.data || `User ${username} status has been toggled!`);
+    } catch (error) {
+      console.error("Error toggling user status:", error);
+      alert("Failed to toggle user status");
     }
   };
 
-  const handleAdminToggle = async (username, shouldPromote) => {
+  const handleAdminToggle = async (userId, username) => {
     try {
-      const endpoint = shouldPromote ? "promote" : "demote";
-      await axios.put(`http://localhost:8080/users/${username}/${endpoint}`);
+      const response = await axios.put(
+        `http://localhost:8080/users/${userId}/toggleAdmin`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
       fetchUsers(currentPage);
-      alert(
-        `User ${username} has been ${
-          shouldPromote ? "promoted to admin" : "demoted from admin"
-        }!`
-      );
+      alert(response.data || `User ${username} admin status has been toggled!`);
     } catch (error) {
-      console.error(
-        `Error ${shouldPromote ? "promoting" : "demoting"} user:`,
-        error
-      );
-      alert(`Failed to ${shouldPromote ? "promote" : "demote"} user`);
+      console.error("Error toggling admin status:", error);
+      alert("Failed to toggle admin status");
     }
   };
 
@@ -95,6 +100,41 @@ export default function UserManagement() {
     setSearchUsername("");
     setIsSearching(false);
     fetchUsers(1);
+  };
+
+  // Helper function to check if user is admin
+  const isAdmin = (user) => {
+    // Handle single role property (from backend: user.getRole())
+    if (user.role) {
+      return (
+        user.role === "ADMIN" ||
+        user.role === "ROLE_ADMIN" ||
+        user.role.toUpperCase() === "ADMIN"
+      );
+    }
+
+    // Handle roles array (legacy format)
+    if (user.roles) {
+      if (Array.isArray(user.roles)) {
+        return user.roles.some(
+          (role) =>
+            role === "ADMIN" ||
+            role === "ROLE_ADMIN" ||
+            role.toUpperCase() === "ADMIN"
+        );
+      }
+
+      // Handle string roles
+      if (typeof user.roles === "string") {
+        return (
+          user.roles === "ADMIN" ||
+          user.roles === "ROLE_ADMIN" ||
+          user.roles.toUpperCase() === "ADMIN"
+        );
+      }
+    }
+
+    return false;
   };
 
   // Client-side pagination
@@ -146,16 +186,15 @@ export default function UserManagement() {
                 <td>{user.email}</td>
                 <td>
                   <span
-                    className={`role-badge ${
-                      user.roles && user.roles.includes("ADMIN")
-                        ? "admin"
-                        : "user"
-                    }`}
+                    className={`role-badge ${isAdmin(user) ? "admin" : "user"}`}
                   >
-                    {user.roles && user.roles.includes("ADMIN")
-                      ? "Admin"
-                      : "User"}
+                    {isAdmin(user) ? "Admin" : "User"}
                   </span>
+                  {/* Debug info - remove this later */}
+                  <div style={{ fontSize: "0.7em", color: "#666" }}>
+                    role: {JSON.stringify(user.role)} | roles:{" "}
+                    {JSON.stringify(user.roles)}
+                  </div>
                 </td>
                 <td>
                   <span
@@ -179,16 +218,20 @@ export default function UserManagement() {
                       {user.enabled ? "Ban" : "Unban"}
                     </button>
 
-                    {user.roles && user.roles.includes("ADMIN") ? (
+                    {isAdmin(user) ? (
                       <button
-                        onClick={() => handleAdminToggle(user.username, false)}
+                        onClick={() =>
+                          handleAdminToggle(user.id, user.username)
+                        }
                         className="action-button demote"
                       >
                         Demote
                       </button>
                     ) : (
                       <button
-                        onClick={() => handleAdminToggle(user.username, true)}
+                        onClick={() =>
+                          handleAdminToggle(user.id, user.username)
+                        }
                         className="action-button promote"
                       >
                         Promote

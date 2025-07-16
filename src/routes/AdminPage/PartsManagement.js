@@ -17,6 +17,8 @@ export default function PartsManagement() {
   const [loading, setLoading] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [editValue, setEditValue] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newItemValue, setNewItemValue] = useState("");
 
   useEffect(() => {
     fetchParts(activeTab);
@@ -39,11 +41,24 @@ export default function PartsManagement() {
   const getUpdateEndpoint = (tab, id) => {
     switch (tab) {
       case "blades":
-        return `/blade_parts/${id}`;
+        return `/admin/blade/${id}`;
       case "ratchets":
-        return `/ratchets/${id}`;
+        return `/admin/ratchet/${id}`;
       case "bits":
-        return `/bittype/${id}`;
+        return `/admin/bit/${id}`;
+      default:
+        return "";
+    }
+  };
+
+  const getAddEndpoint = (tab) => {
+    switch (tab) {
+      case "blades":
+        return "/admin/blade";
+      case "ratchets":
+        return "/admin/ratchet";
+      case "bits":
+        return "/admin/bit";
       default:
         return "";
     }
@@ -107,7 +122,14 @@ export default function PartsManagement() {
       // Use 'bit' property for bits tab, 'name' for others
       const payload =
         activeTab === "bits" ? { bit: editValue } : { name: editValue };
-      await axios.put(
+
+      console.log("Updating part:", { id, activeTab, payload });
+      console.log(
+        "Update endpoint:",
+        `http://localhost:8080/${getUpdateEndpoint(activeTab, id)}`
+      );
+
+      const response = await axios.put(
         `http://localhost:8080${getUpdateEndpoint(activeTab, id)}`,
         payload,
         {
@@ -116,12 +138,67 @@ export default function PartsManagement() {
           },
         }
       );
+
+      console.log("Update response:", response.data);
       setEditingId(null);
       setEditValue("");
       fetchParts(activeTab);
     } catch (error) {
-      alert("Failed to update part.");
+      console.error("Update error:", error);
+      console.error("Error response:", error.response?.data);
+      console.error("Error status:", error.response?.status);
+      alert(
+        `Failed to update part: ${
+          error.response?.data?.message || error.message
+        }`
+      );
     }
+  };
+
+  const handleAddPart = async () => {
+    if (!newItemValue.trim()) return;
+
+    try {
+      // Use 'bit' property for bits tab, 'name' for others
+      const payload =
+        activeTab === "bits" ? { bit: newItemValue } : { name: newItemValue };
+
+      console.log("Adding part:", { activeTab, payload });
+      console.log(
+        "Add endpoint:",
+        `http://localhost:8080/${getAddEndpoint(activeTab)}`
+      );
+
+      const response = await axios.post(
+        `http://localhost:8080${getAddEndpoint(activeTab)}`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      console.log("Add response:", response.data);
+      setNewItemValue("");
+      setShowAddForm(false);
+      fetchParts(activeTab);
+    } catch (error) {
+      console.error("Add error:", error);
+      console.error("Error response:", error.response?.data);
+      console.error("Error status:", error.response?.status);
+      alert(
+        `Failed to add part: ${error.response?.data?.message || error.message}`
+      );
+    }
+  };
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setShowAddForm(false);
+    setNewItemValue("");
+    setEditingId(null);
+    setEditValue("");
   };
 
   const renderTable = (tab) => {
@@ -218,13 +295,105 @@ export default function PartsManagement() {
           <button
             key={type.key}
             className={`subtab ${activeTab === type.key ? "active" : ""}`}
-            onClick={() => setActiveTab(type.key)}
+            onClick={() => handleTabChange(type.key)}
           >
             {type.label}
           </button>
         ))}
       </div>
-      <div style={{ marginTop: 24 }}>
+
+      {/* Add Part Form */}
+      <div style={{ marginTop: 20, marginBottom: 20 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 10,
+          }}
+        >
+          <button
+            className="add-part-btn"
+            style={{
+              background: "#007bff",
+              color: "white",
+              border: "none",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              cursor: "pointer",
+            }}
+            onClick={() => setShowAddForm(!showAddForm)}
+          >
+            {showAddForm ? "Cancel" : `Add New ${activeTab.slice(0, -1)}`}
+          </button>
+        </div>
+
+        {showAddForm && (
+          <div
+            className="add-part-form"
+            style={{
+              background: "#f8f9fa",
+              border: "1px solid #dee2e6",
+              borderRadius: "8px",
+              padding: "20px",
+              boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+            }}
+          >
+            <h3 style={{ margin: "0 0 15px 0", color: "#333" }}>
+              Add New {activeTab.slice(0, -1)}
+            </h3>
+            <div style={{ marginBottom: 10 }}>
+              <input
+                type="text"
+                value={newItemValue}
+                onChange={(e) => setNewItemValue(e.target.value)}
+                placeholder={`Enter ${activeTab.slice(0, -1)} name`}
+                style={{
+                  padding: "10px",
+                  border: "1px solid #ddd",
+                  borderRadius: "4px",
+                  width: "100%",
+                  boxSizing: "border-box",
+                }}
+                onKeyPress={(e) => e.key === "Enter" && handleAddPart()}
+              />
+            </div>
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <button
+                onClick={handleAddPart}
+                style={{
+                  background: "#28a745",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Add
+              </button>
+              <button
+                onClick={() => {
+                  setShowAddForm(false);
+                  setNewItemValue("");
+                }}
+                style={{
+                  background: "#6c757d",
+                  color: "white",
+                  border: "none",
+                  padding: "10px 20px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div>
         {loading ? (
           <div className="loading">Loading...</div>
         ) : (
