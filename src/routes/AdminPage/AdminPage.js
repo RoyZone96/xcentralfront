@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import UserManagement from "./UserManagement";
 import PartsManagement from "./PartsManagement";
+import FlaggedSubmissions from "./FlaggedSubmissions";
 import "./AdminPage.css";
 
 export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("users");
   const [isAdmin, setIsAdmin] = useState(false);
   const [checkedAuth, setCheckedAuth] = useState(false);
+  const [flaggedCount, setFlaggedCount] = useState(0);
   const navigate = useNavigate();
 
   // Admin authentication/authorization check
@@ -31,12 +34,29 @@ export default function AdminPage() {
       if (!adminStatus) {
         alert("You are not authorized to view this page.");
         navigate("/login");
+      } else {
+        // Fetch flagged submissions count
+        fetchFlaggedCount();
       }
     } catch (e) {
       navigate("/login");
     }
     // eslint-disable-next-line
   }, []);
+
+  const fetchFlaggedCount = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const headers = { Authorization: `Bearer ${token}` };
+      const response = await axios.get(
+        "http://localhost:8080/admin/flagged-submissions/count",
+        { headers }
+      );
+      setFlaggedCount(response.data.count || 0);
+    } catch (error) {
+      console.error("Error fetching flagged count:", error);
+    }
+  };
 
   if (!checkedAuth) return null;
   if (!isAdmin) return null;
@@ -57,10 +77,28 @@ export default function AdminPage() {
         >
           Parts
         </button>
+        <button
+          className={activeTab === "flagged" ? "active" : ""}
+          onClick={() => setActiveTab("flagged")}
+        >
+          Flagged Submissions
+          {flaggedCount > 0 && (
+            <span className="notification-badge">{flaggedCount}</span>
+          )}
+        </button>
       </div>
 
-      {activeTab === "users" && <UserManagement />}
-      {activeTab === "parts" && <PartsManagement />}
+      <div className="tab-content">
+        {activeTab === "users" && <UserManagement />}
+        {activeTab === "parts" && <PartsManagement />}
+        {activeTab === "flagged" && (
+          <FlaggedSubmissions
+            onFlagResolved={() =>
+              setFlaggedCount((prev) => Math.max(0, prev - 1))
+            }
+          />
+        )}
+      </div>
     </div>
   );
 }

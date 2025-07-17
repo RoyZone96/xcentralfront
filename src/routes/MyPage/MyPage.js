@@ -4,7 +4,6 @@ import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import { jwtDecode } from "jwt-decode";
-import LogoutButton from "../../components/Logout/Logout";
 import "./MyPage.css";
 
 export default function AccountPage() {
@@ -12,8 +11,8 @@ export default function AccountPage() {
   const [userName, setUserName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [profilePicture, setProfilePicture] = useState(null);
   const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const [lastUpdateTime, setLastUpdateTime] = useState({});
   const navigate = useNavigate();
 
   const BEYS_ON_PAGE = 10; // Number of submissions to display per page
@@ -120,6 +119,49 @@ export default function AccountPage() {
         return;
       }
 
+      // Find the current submission for validation
+      const currentSubmission = submissions.find((sub) => sub.id === id);
+      if (!currentSubmission) {
+        alert("Submission not found");
+        return;
+      }
+
+      // Rate limiting: prevent rapid updates (3 seconds)
+      const now = Date.now();
+      const lastUpdate = lastUpdateTime[id] || 0;
+      if (now - lastUpdate < 3000) {
+        alert("Please wait 3 seconds between updates");
+        return;
+      }
+
+      // Check for large changes (flag suspicious activity)
+      const winDiff = Math.abs(wins - currentSubmission.wins);
+      const lossDiff = Math.abs(losses - currentSubmission.losses);
+      let shouldFlag = false;
+      let flagReason = "";
+
+      if (winDiff > 5 || lossDiff > 5) {
+        shouldFlag = true;
+        flagReason = `Large change detected (+${winDiff} wins, +${lossDiff} losses)`;
+        const confirm = window.confirm(
+          `${flagReason}. Continue? This will be logged for review.`
+        );
+        if (!confirm) return;
+      }
+
+      // Flag high win rates
+      const totalMatches = wins + losses;
+      if (totalMatches > 10) {
+        const winRate = wins / totalMatches;
+        if (winRate > 0.9) {
+          shouldFlag = true;
+          flagReason = `High win rate detected (${(winRate * 100).toFixed(
+            1
+          )}%)`;
+          alert(`${flagReason}. This will be flagged for admin review.`);
+        }
+      }
+
       const token = localStorage.getItem("token");
       const headers = {
         Authorization: `Bearer ${token}`,
@@ -131,14 +173,47 @@ export default function AccountPage() {
         updatedSubmission,
         { headers }
       );
+
       setSubmissions(
         submissions.map((submission) =>
           submission.id === id ? { ...submission, wins, losses } : submission
         )
       );
+
+      // Update rate limiting tracker
+      setLastUpdateTime((prev) => ({ ...prev, [id]: now }));
+
+      // Flag submission if suspicious activity detected
+      if (shouldFlag) {
+        try {
+          await axios.put(
+            `http://localhost:8080/submissions/flag/${id}`,
+            {
+              reason: flagReason,
+              flaggedAt: new Date().toISOString(),
+              flaggedBy: userName,
+              oldValues: {
+                wins: currentSubmission.wins,
+                losses: currentSubmission.losses,
+              },
+              newValues: { wins, losses },
+            },
+            { headers }
+          );
+          console.log(`Submission ${id} flagged for review: ${flagReason}`);
+        } catch (flagError) {
+          console.error("Error flagging submission:", flagError);
+          // Don't prevent the update if flagging fails
+        }
+      }
     } catch (error) {
       console.error("Error updating submission:", error);
-      alert("Failed to update submission");
+      if (error.response?.status === 401) {
+        alert("Authentication failed. Please login again.");
+        navigate("/login");
+      } else {
+        alert("Failed to update submission");
+      }
     }
   };
 
@@ -293,6 +368,12 @@ export default function AccountPage() {
       </button>
 
       <h2>My Submissions</h2>
+      <div className="fair-play-notice">
+        <small>
+          <strong>🛡️ Fair Play:</strong> Updates are rate-limited and large
+          changes are logged for review.
+        </small>
+      </div>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -301,6 +382,7 @@ export default function AccountPage() {
             <th>Bit</th>
             <th>Wins</th>
             <th>Losses</th>
+            <th>Win Rate</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -339,6 +421,15 @@ export default function AccountPage() {
                     )
                   }
                 />
+              </td>
+              <td>
+                {submission.wins + submission.losses > 0
+                  ? `${(
+                      (submission.wins /
+                        (submission.wins + submission.losses)) *
+                      100
+                    ).toFixed(1)}%`
+                  : "0.0%"}
               </td>
               <td>
                 <Button

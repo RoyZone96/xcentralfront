@@ -360,3 +360,33 @@ h2 {
     padding: 8px 6px;
   }
 }
+
+/* Fair play notice styling */
+.fair-play-notice {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 2px solid #f59e0b;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  text-align: center;
+  font-weight: 500;
+  color: #92400e;
+  box-shadow: 0 4px 6px rgba(245, 158, 11, 0.1);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.fair-play-notice .warning-icon {
+  margin-right: 8px;
+  font-size: 1.2em;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

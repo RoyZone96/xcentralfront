@@ -4,6 +4,7 @@
   padding: 20px;
   min-height: 100vh;
   box-sizing: border-box;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
 }
 
 .admin-page h1 {
@@ -17,26 +18,48 @@
 .admin-tabs {
   display: flex;
   margin-bottom: 20px;
-  border-bottom: 2px solid #eee;
+  border-bottom: none;
+  background: rgba(248, 249, 250, 0.9);
+  border-radius: 10px 10px 0 0;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
 }
 
 .admin-tabs button {
-  padding: 10px 20px;
-  background: none;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.7);
   border: none;
   cursor: pointer;
   font-size: 16px;
-  color: #666;
-  transition: color 0.3s;
+  color: #495057;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px;
+  margin-right: 0.5rem;
+  font-weight: 500;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .admin-tabs button:hover {
-  color: #333;
+  background: rgba(255, 255, 255, 0.9);
+  color: #007bff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .admin-tabs button.active {
-  color: #007bff;
-  border-bottom: 2px solid #007bff;
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  border: 1px solid #007bff;
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
 }
 
 .users-tab h2 {
@@ -846,4 +869,410 @@
 
 .part-image img + .part-placeholder {
   display: none;
+}
+
+/* Flagged Submissions Styles */
+.flagged-submissions {
+  padding: 20px;
+}
+
+.flagged-submissions h3 {
+  color: #333;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.no-flags {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+  border: 2px solid #28a745;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.no-flags p {
+  font-size: 1.2em;
+  color: #155724;
+  margin: 0;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1em;
+  color: #666;
+}
+
+.review-details h5 {
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+.value-comparison {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.old-values,
+.new-values {
+  flex: 1;
+  padding: 1.25rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.old-values {
+  background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
+  border: 2px solid #dc3545;
+}
+
+.new-values {
+  background: linear-gradient(135deg, #d4edda 0%, #a3d9a5 100%);
+  border: 2px solid #28a745;
+}
+
+.old-values h6,
+.new-values h6 {
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.old-values h6 {
+  color: #721c24;
+}
+
+.new-values h6 {
+  color: #155724;
+}
+
+.old-values p,
+.new-values p {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+/* Badge styling adjustments */
+.badge {
+  font-size: 0.9em;
+  padding: 6px 10px;
+}
+
+/* Responsive design for flagged submissions */
+@media (max-width: 768px) {
+  .value-comparison {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .flagged-submissions table {
+    font-size: 0.9em;
+  }
+
+  .flagged-submissions th,
+  .flagged-submissions td {
+    padding: 8px 4px;
+  }
+}
+
+/* Modal z-index fix */
+.flagged-modal {
+  z-index: 10000 !important;
+}
+
+.flagged-modal .modal-dialog {
+  z-index: 10001 !important;
+  position: relative;
+}
+
+.modal {
+  z-index: 10000 !important;
+}
+
+.modal-backdrop {
+  z-index: 9999 !important;
+  opacity: 0.85 !important;
+  background-color: rgba(0, 0, 0, 0.85) !important;
+}
+
+/* Inline modal buttons */
+.modal-footer-inline {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+  border-top: 2px solid #e9ecef;
+  background: white;
+}
+
+.modal-button-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.modal-button-group .btn {
+  margin: 0;
+  min-width: 130px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.modal-button-group .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.modal-button-group .btn-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  border: none;
+}
+
+.modal-button-group .btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+  border: none;
+}
+
+.modal-button-group .btn-secondary {
+  background: linear-gradient(135deg, #6c757d 0%, #adb5bd 100%);
+  border: none;
+}
+
+/* Sortable table headers */
+.flagged-submissions th[style*="cursor: pointer"]:hover {
+  background-color: #f8f9fa;
+  color: #007bff;
+}
+
+.flagged-submissions th[style*="cursor: pointer"] {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Additional modal positioning fixes */
+.flagged-modal .modal-content {
+  position: relative;
+  z-index: 10002;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  border: none;
+  overflow: hidden;
+}
+
+.flagged-modal .modal-header {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  border-bottom: none;
+  padding: 1.5rem;
+}
+
+.flagged-modal .modal-header .modal-title {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.flagged-modal .modal-header .btn-close {
+  filter: invert(1);
+  opacity: 0.8;
+}
+
+.flagged-modal .modal-body {
+  padding: 2rem;
+  background: #f8f9fa;
+}
+
+.review-details {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review-details h5 {
+  color: #495057;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+}
+
+.review-details p {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.review-details strong {
+  color: #343a40;
+  font-weight: 600;
+}
+
+.review-details hr {
+  margin: 1.5rem 0;
+  border-top: 2px solid #e9ecef;
+}
+
+/* Ensure modal is centered and visible */
+.flagged-modal .modal-dialog {
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+/* Override any conflicting z-index from footer or other elements */
+.modal-open {
+  overflow: hidden;
+}
+
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Responsive button layout */
+@media (max-width: 576px) {
+  .modal-button-group {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .modal-button-group .btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .value-comparison {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .flagged-modal .modal-body {
+    padding: 1.5rem;
+  }
+
+  .review-details {
+    padding: 1rem;
+  }
+
+  .flagged-modal .modal-header {
+    padding: 1.25rem;
+  }
+
+  .modal-footer-inline {
+    padding: 1.25rem;
+  }
+}
+
+.notification-badge {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border-radius: 50%;
+  padding: 3px 7px;
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.4);
+  border: 2px solid white;
+  position: relative;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Active tab notification badge styling */
+.admin-tabs button.active .notification-badge {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  color: #212529;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(255, 193, 7, 0.5);
+}
+
+/* Tab container enhancements */
+.admin-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: transparent;
+  background-size: inherit;
+  background-position: inherit;
+  background-repeat: inherit;
+}
+
+/* Tab content area */
+.tab-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 0 0 10px 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 123, 255, 0.1);
+  border-top: none;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Responsive tab design */
+@media (max-width: 768px) {
+  .admin-tabs {
+    flex-direction: column;
+    padding: 0.5rem;
+    border-radius: 10px;
+  }
+
+  .admin-tabs button {
+    margin: 0 0 0.5rem 0;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .admin-tabs button:last-child {
+    margin-bottom: 0;
+  }
+
+  .tab-content {
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-top: 1rem;
+    border: 1px solid rgba(0, 123, 255, 0.1);
+  }
+}
+
+/* Tab transitions */
+.admin-tabs button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Focus states for accessibility */
+.admin-tabs button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
 }
