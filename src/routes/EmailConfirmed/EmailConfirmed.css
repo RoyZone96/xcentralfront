@@ -29,3 +29,68 @@
   background: linear-gradient(90deg, #1e3a5c 70%, #e0e6eb 100%);
   color: #2563a6;
 }
+
+.resend-section {
+  margin: 24px 0;
+  padding: 20px;
+  background: linear-gradient(120deg, #fff3cd 0%, #ffeaa7 100%);
+  border-radius: 8px;
+  border: 1px solid #ffc107;
+}
+
+.resend-section h3 {
+  color: #856404;
+  margin-bottom: 12px;
+  font-size: 1.1rem;
+}
+
+.resend-section p {
+  color: #856404;
+  margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+
+.email-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.email-input {
+  width: 100%;
+  max-width: 280px;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.email-input:focus {
+  outline: none;
+  border-color: #ffc107;
+  box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
+}
+
+.resend-button {
+  padding: 10px 20px;
+  background: linear-gradient(90deg, #28a745 70%, #a3cfbb 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  min-width: 120px;
+}
+
+.resend-button:hover {
+  background: linear-gradient(90deg, #1e7e34 70%, #d1e7dd 100%);
+}
+
+.resend-button:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
