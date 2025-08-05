@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 export default function BladeSelect({ setBladeType, bladeType }) {
   const [options, setOptions] = useState([]);
@@ -7,7 +8,7 @@ export default function BladeSelect({ setBladeType, bladeType }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/blade_parts/bladelist")
+      .get(`${API_BASE_URL}/blade_parts/bladelist`)
       .then((response) => {
         setOptions(response.data);
         setLoading(false);

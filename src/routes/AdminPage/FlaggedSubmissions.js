@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Modal } from "react-bootstrap";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 
 export default function FlaggedSubmissions({ onFlagResolved }) {
   const [flaggedSubmissions, setFlaggedSubmissions] = useState([]);
@@ -20,7 +21,7 @@ export default function FlaggedSubmissions({ onFlagResolved }) {
       const headers = { Authorization: `Bearer ${token}` };
 
       const response = await axios.get(
-        "http://localhost:8080/submissions/flagged",
+        `${API_BASE_URL}/submissions/flagged`,
         { headers }
       );
 
@@ -52,7 +53,7 @@ export default function FlaggedSubmissions({ onFlagResolved }) {
 
       // Both approved and rejected submissions use the same resolve endpoint
       // The backend will unflag the submission regardless of admin decision
-   await axios.put(`http://localhost:8080/admin/submissions/${submissionId}/resolve`, { action }, { headers });
+      await axios.put(`${API_BASE_URL}/admin/submissions/${submissionId}/resolve`, { action }, { headers });
       // Remove from list after resolving
       setFlaggedSubmissions((prev) =>
         prev.filter((submission) => submission.id !== submissionId)

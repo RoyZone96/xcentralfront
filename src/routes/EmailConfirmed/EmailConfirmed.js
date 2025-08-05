@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 import "./EmailConfirmed.css";
 
 export default function EmailConfirmed() {
@@ -10,6 +11,16 @@ export default function EmailConfirmed() {
   const [showResendOption, setShowResendOption] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const location = useLocation();
+
+  // Move extractEmailFromContext outside useEffect to avoid scope issues
+  const extractEmailFromContext = useCallback(() => {
+    // Try to get email from URL parameters (if passed from registration)
+    const urlParams = new URLSearchParams(location.search);
+    const email = urlParams.get("email");
+    if (email) {
+      setUserEmail(decodeURIComponent(email));
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -25,9 +36,18 @@ export default function EmailConfirmed() {
           return;
         }
 
+        // Basic token validation (should be UUID format)
+        const tokenRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+        if (!tokenRegex.test(token)) {
+          setVerificationStatus("error");
+          setMessage("Invalid verification token format.");
+          setShowResendOption(true);
+          return;
+        }
+
         // Call your backend verification endpoint
         await axios.get(
-          `http://localhost:8080/users/verify-email?token=${token}`,
+          `${API_BASE_URL}/users/verify-email?token=${encodeURIComponent(token)}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -100,17 +120,8 @@ export default function EmailConfirmed() {
       }
     };
 
-    const extractEmailFromContext = () => {
-      // Try to get email from URL parameters (if passed from registration)
-      const urlParams = new URLSearchParams(location.search);
-      const email = urlParams.get("email");
-      if (email) {
-        setUserEmail(decodeURIComponent(email));
-      }
-    };
-
     verifyEmail();
-  }, [location]);
+  }, [location, extractEmailFromContext]);
 
   const resendConfirmationEmail = async () => {
     if (!userEmail) {
@@ -120,10 +131,17 @@ export default function EmailConfirmed() {
       return;
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(userEmail.trim())) {
+      alert("Please enter a valid email address.");
+      return;
+    }
+
     setIsResending(true);
     try {
       await axios.post(
-        `http://localhost:8080/users/resend-confirmation?email=${encodeURIComponent(
+        `${API_BASE_URL}/users/resend-confirmation?email=${encodeURIComponent(
           userEmail
         )}`
       );

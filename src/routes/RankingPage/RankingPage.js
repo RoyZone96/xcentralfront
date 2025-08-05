@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Table from 'react-bootstrap/Table';
+import { API_BASE_URL } from "../../config/api";
 import './RankingPage.css';
 
 const RankingPage = () => {
@@ -12,7 +13,7 @@ const RankingPage = () => {
     const RANKS_ON_PAGE = 10; // Number of ranks to display per page
 
     useEffect(() => {
-        axios.get("http://localhost:8080/submissions/sublist")
+        axios.get(`${API_BASE_URL}/submissions/sublist`)
             .then(response => {
                 setRankings(response.data);
                 setLoading(false);

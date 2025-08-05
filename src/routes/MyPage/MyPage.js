@@ -4,6 +4,7 @@ import axios from "axios";
 import { Button, Form } from "react-bootstrap";
 import { Table } from "react-bootstrap";
 import { jwtDecode } from "jwt-decode";
+import { API_BASE_URL } from "../../config/api";
 import "./MyPage.css";
 
 export default function AccountPage() {
@@ -22,13 +23,17 @@ export default function AccountPage() {
       try {
         const token = localStorage.getItem("token");
         if (!token) {
-          throw new Error("User is not authenticated");
+          alert("Please log in to access this page");
+          navigate("/login");
+          return;
         }
 
         const decodedToken = jwtDecode(token);
-        const username = decodedToken.sub;
+        const username = decodedToken?.sub;
         if (!username) {
-          throw new Error("Username not found in token");
+          alert("Invalid token. Please log in again.");
+          navigate("/login");
+          return;
         }
 
         // Check if user is admin from token (robust for array or string)
@@ -57,7 +62,7 @@ export default function AccountPage() {
 
         // Load user submissions
         const response = await axios.get(
-          `http://localhost:8080/submissions/sublist/username/${username}`,
+          `${API_BASE_URL}/submissions/sublist/username/${username}`,
           { headers }
         );
         const submissions = response.data;
@@ -70,7 +75,7 @@ export default function AccountPage() {
         // Load profile picture if exists
         try {
           const profileResponse = await axios.get(
-            `http://localhost:8080/users/profile-picture/${username}`,
+            `${API_BASE_URL}/users/profile-picture/${username}`,
             { headers }
           );
           if (profileResponse.data) {
@@ -93,7 +98,7 @@ export default function AccountPage() {
     };
 
     loadUserSubmissions();
-  }, []);
+  }, [navigate]);
 
   const handleDelete = async (id) => {
     try {
@@ -102,7 +107,7 @@ export default function AccountPage() {
         Authorization: `Bearer ${token}`,
       };
 
-      await axios.delete(`http://localhost:8080/submissions/id/${id}`, {
+      await axios.delete(`${API_BASE_URL}/submissions/id/${id}`, {
         headers,
       });
       setSubmissions(submissions.filter((submission) => submission.id !== id));
@@ -169,7 +174,7 @@ export default function AccountPage() {
 
       const updatedSubmission = { wins, losses };
       await axios.put(
-        `http://localhost:8080/submissions/id/${id}`,
+        `${API_BASE_URL}/submissions/id/${id}`,
         updatedSubmission,
         { headers }
       );
@@ -187,7 +192,7 @@ export default function AccountPage() {
       if (shouldFlag) {
         try {
           await axios.put(
-            `http://localhost:8080/submissions/flag/${id}`,
+            `${API_BASE_URL}/submissions/flag/${id}`,
             {
               reason: flagReason,
               flaggedAt: new Date().toISOString(),
@@ -243,7 +248,7 @@ export default function AccountPage() {
       formData.append("file", file);
 
       const response = await axios.post(
-        `http://localhost:8080/users/${userName}/profile-image`,
+        `${API_BASE_URL}/users/${userName}/profile-image`,
         formData,
         {
           headers: {
@@ -257,7 +262,7 @@ export default function AccountPage() {
         // After successful upload, fetch the updated profile picture URL
         try {
           const profileResponse = await axios.get(
-            `http://localhost:8080/users/profile-picture/${userName}`,
+            `${API_BASE_URL}/users/profile-picture/${userName}`,
             { headers }
           );
           if (profileResponse.data) {

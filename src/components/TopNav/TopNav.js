@@ -10,8 +10,24 @@ const TopNav = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    setHasToken(!!token);
+    const checkToken = () => {
+      const token = localStorage.getItem("token");
+      setHasToken(!!token);
+    };
+
+    // Check token on mount
+    checkToken();
+
+    // Listen for storage changes (when token is added/removed)
+    window.addEventListener('storage', checkToken);
+    
+    // Custom event for immediate token updates
+    window.addEventListener('tokenChanged', checkToken);
+
+    return () => {
+      window.removeEventListener('storage', checkToken);
+      window.removeEventListener('tokenChanged', checkToken);
+    };
   }, []);
 
   const toggleMenu = () => {
@@ -21,6 +37,8 @@ const TopNav = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setHasToken(false);
+    // Dispatch custom event to update other components
+    window.dispatchEvent(new Event('tokenChanged'));
     navigate("/login");
   };
 

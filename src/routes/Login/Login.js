@@ -3,6 +3,7 @@ import "./Login.css";
 import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../config/api";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -18,11 +19,13 @@ export default function Login() {
     try {
       const user = { username, password };
       const response = await axios.post(
-        "http://localhost:8080/users/authenticate",
+        `${API_BASE_URL}/users/authenticate`,
         user
       );
       const token = response.data;
       localStorage.setItem("token", token);
+      // Dispatch custom event to update navigation
+      window.dispatchEvent(new Event('tokenChanged'));
       console.log(token);
       alert("Login successful");
       navigate("/myPage");

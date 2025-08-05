@@ -4,6 +4,7 @@ import "./Registration.css";
 import { useState, React } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { API_BASE_URL } from "../../config/api";
 
 export default function Registration() {
   let navigate = useNavigate();
@@ -73,7 +74,7 @@ export default function Registration() {
     try {
       // Check if username already exists
       const existingUser = await axios.get(
-        `http://localhost:8080/users/username/${username}`
+        `${API_BASE_URL}/users/username/${username}`
       );
       if (existingUser.status === 200) {
         alert("Username already exists. Please choose a different username.");
@@ -109,7 +110,7 @@ export default function Registration() {
     try {
       // Check if email already exists
       const existingEmail = await axios.get(
-        `http://localhost:8080/users/email/${email}`
+        `${API_BASE_URL}/users/email/${email}`
       );
       if (existingEmail.status === 200) {
         alert(
@@ -154,7 +155,7 @@ export default function Registration() {
       };
 
       await axios.post(
-        "http://localhost:8080/users/newuser",
+        `${API_BASE_URL}/users/newuser`,
         userWithHashedPassword
       );
       alert(

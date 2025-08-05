@@ -26,6 +26,16 @@ const TokenService = {
     getUserId(user_id) {
         return window.sessionStorage.getItem('user_id', user_id)
     },
+    readJwtToken() {
+        const token = TokenService.getAuthToken();
+        if (!token) return null;
+        try {
+            return JSON.parse(window.atob(token.split('.')[1]));
+        } catch (error) {
+            console.error('Error decoding JWT token:', error);
+            return null;
+        }
+    },
     _getMsUntilExpiry(payload) {
         return (payload.exp * 1000) - Date.now()
     },

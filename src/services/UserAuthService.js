@@ -1,9 +1,10 @@
-import {jwtDecode} from 'jwt-decode';
-import axios from 'axios';
+import jwt_decode from "jwt-decode";
+import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
-const getUserById = async (id) => {
+const fetchUserById = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:8080/user/id/${id}`);
+    const response = await axios.get(`${API_BASE_URL}/user/id/${id}`);
     return response.data;
   } catch (error) {
     console.error(`Error fetching user data: ${error}`);
@@ -21,16 +22,17 @@ const UserAuthService = {
         return null;
       }
 
-      const decodedToken = jwtDecode(token);
+      const decodedToken = jwt_decode(token);
       console.log(`Decoded Token:`, decodedToken); // Log the decoded token to inspect its contents
 
       // Assuming the user ID is stored under `sub` in the token payload
-      const {userId, userName} = decodedToken.sub; // Adjust this based on your token structure
+      const userId = decodedToken.sub; // sub is typically the username/identifier
+      const userName = decodedToken.sub; // Use sub as the username
       if (!userId) {
         console.error('User ID not found in token. Please log in again.');
         return null;
       }
-      return userId, userName;
+      return { userId, userName };
     } catch (error) {
       console.error(`Error decoding token: ${error}`);
       return null;
@@ -44,7 +46,7 @@ const UserAuthService = {
     console.log(`Obtained User ID: ${userId}, User Name: ${userName}`);
 
     if (userId) {
-      const userData = await getUserById(userId);
+      const userData = await fetchUserById(userId);
       console.log(`User data for ID ${userId}:`, userData); // Log the user data obtained with the user ID
       return userData;
     } else {

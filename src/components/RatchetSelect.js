@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 export default function RatchetSelect({ setRatchetType, ratchetType }) {
   const [options, setOptions] = useState([]);
@@ -7,7 +8,7 @@ export default function RatchetSelect({ setRatchetType, ratchetType }) {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/ratchets/ratchetlist")
+      .get(`${API_BASE_URL}/ratchets/ratchetlist`)
       .then((response) => {
         setOptions(response.data);
         console.log(response.data);

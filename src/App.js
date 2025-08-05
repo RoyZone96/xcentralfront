@@ -26,19 +26,19 @@ function App() {
           <TopNav />
           <div className="content-body">
           <Routes>
-            <Route exact path="/" Component={Landing} />
-            <Route exact path="/login" Component={Login} />
-            <Route exact path="/registration" Component={Registration} />
-            <Route exact path="/myPage" Component={MyPage} />
-            <Route exact path="/createPage" Component={CreateCombo} />
-            <Route exact path="/rankingPage" Component={RankingPage} />
-            <Route exact path="/updatePassword" Component={UpdatePassword} />
-            <Route exact path="/updateEmail" Component={UpdateEmail} />
-            <Route exact path="/forgotAccount" Component={ForgotAccount} />
-            <Route exact path="/otpEntry" Component={OtpEntry} />
-            <Route exact path="/newPassword" Component={NewPassword} />
-            <Route exact path="/verify" Component={EmailConfirmed} />
-            <Route exact path="/adminPage" Component={AdminPage} />
+            <Route path="/" element={<Landing />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/registration" element={<Registration />} />
+            <Route path="/myPage" element={<MyPage />} />
+            <Route path="/createPage" element={<CreateCombo />} />
+            <Route path="/rankingPage" element={<RankingPage />} />
+            <Route path="/updatePassword" element={<UpdatePassword />} />
+            <Route path="/updateEmail" element={<UpdateEmail />} />
+            <Route path="/forgotAccount" element={<ForgotAccount />} />
+            <Route path="/otpEntry" element={<OtpEntry />} />
+            <Route path="/newPassword" element={<NewPassword />} />
+            <Route path="/verify" element={<EmailConfirmed />} />
+            <Route path="/adminPage" element={<AdminPage />} />
           </Routes>
           </div>
           <Footer />

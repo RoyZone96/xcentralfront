@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 import UserManagement from "./UserManagement";
 import PartsManagement from "./PartsManagement";
 import FlaggedSubmissions from "./FlaggedSubmissions";
@@ -49,7 +50,7 @@ export default function AdminPage() {
       const token = localStorage.getItem("token");
       const headers = { Authorization: `Bearer ${token}` };
       const response = await axios.get(
-        "http://localhost:8080/admin/flagged-submissions/count",
+        `${API_BASE_URL}/admin/flagged-submissions/count`,
         { headers }
       );
       setFlaggedCount(response.data.count || 0);

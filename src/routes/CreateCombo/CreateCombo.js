@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import BitSelect from "../../components/BitSelect";
 import BladeSelect from "../../components/BladeSelect";
 import RatchetSelect from "../../components/RatchetSelect";
+import { API_BASE_URL } from "../../config/api";
 import "./CreateCombo.css";
 
 export default function CreateCombo() {
@@ -57,7 +58,7 @@ export default function CreateCombo() {
 
       // Make the POST request to submit the combination
       const response = await axios.post(
-        "http://localhost:8080/submissions/newsub",
+        `${API_BASE_URL}/submissions/newsub`,
         payload,
         { headers }
       );

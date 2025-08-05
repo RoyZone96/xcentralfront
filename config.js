@@ -1,3 +1,5 @@
-export default {
-    API_ENDPOINT: 'http://localhost:8080'
-    };
+const config = {
+    API_ENDPOINT: 'https://xcentralback.onrender.com'
+};
+
+export default config;
