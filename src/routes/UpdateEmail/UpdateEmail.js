@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
+import { API_BASE_URL } from "../../config/api";
 
 const UpdateEmail = () => {
   const [newEmail, setNewEmail] = useState('');
@@ -45,7 +46,7 @@ const UpdateEmail = () => {
 
       console.log('Sending request to update email:', payload);
 
-      const response = await axios.put(`http://localhost:8080/users/${username}/update-email`, payload, { headers });
+      const response = await axios.put(`${API_BASE_URL}/users/${username}/update-email`, payload, { headers });
 
       if (response.status === 200) {
         alert('Email updated successfully');

@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 
 export default function NewPassword() {
   const [password, setPassword] = useState("");
@@ -24,7 +25,7 @@ export default function NewPassword() {
   
       console.log("Sending request to update password:", payload);
       const response = await axios.post(
-        `http://localhost:8080/forgotPassword/resetPassword`,
+        `${API_BASE_URL}/forgotPassword/resetPassword`,
         payload,
         { headers }
       );

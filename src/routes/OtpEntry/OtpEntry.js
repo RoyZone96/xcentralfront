@@ -2,6 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 
 export default function OtpEntry() {
   const [otp, setOtp] = useState("");
@@ -16,7 +17,7 @@ export default function OtpEntry() {
   
       console.log("Sending request to verify OTP:", { otp });
       const response = await axios.post(
-        `http://localhost:8080/forgotPassword/verifyOTP`,
+        `${API_BASE_URL}/forgotPassword/verifyOTP`,
         { otp },
         { headers }
       );

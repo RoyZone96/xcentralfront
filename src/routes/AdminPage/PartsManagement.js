@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 
 const PART_TYPES = [
   { key: "blades", label: "Blade" },
@@ -68,7 +69,7 @@ export default function PartsManagement() {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:8080${getApiEndpoint(tab)}`,
+        `${API_BASE_URL}${getApiEndpoint(tab)}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -126,11 +127,11 @@ export default function PartsManagement() {
       console.log("Updating part:", { id, activeTab, payload });
       console.log(
         "Update endpoint:",
-        `http://localhost:8080/${getUpdateEndpoint(activeTab, id)}`
+        `${API_BASE_URL}/${getUpdateEndpoint(activeTab, id)}`
       );
 
       const response = await axios.put(
-        `http://localhost:8080${getUpdateEndpoint(activeTab, id)}`,
+        `${API_BASE_URL}${getUpdateEndpoint(activeTab, id)}`,
         payload,
         {
           headers: {
@@ -166,11 +167,11 @@ export default function PartsManagement() {
       console.log("Adding part:", { activeTab, payload });
       console.log(
         "Add endpoint:",
-        `http://localhost:8080/${getAddEndpoint(activeTab)}`
+        `${API_BASE_URL}/${getAddEndpoint(activeTab)}`
       );
 
       const response = await axios.post(
-        `http://localhost:8080${getAddEndpoint(activeTab)}`,
+        `${API_BASE_URL}${getAddEndpoint(activeTab)}`,
         payload,
         {
           headers: {

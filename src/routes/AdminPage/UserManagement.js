@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 
 export default function UserManagement() {
   const [users, setUsers] = useState([]);
@@ -17,7 +18,7 @@ export default function UserManagement() {
   const fetchUsers = async (page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:8080/users/userlist`);
+      const response = await axios.get(`${API_BASE_URL}/users/userlist`);
       setUsers(response.data || []);
       console.log("Users data:", response.data);
       const totalUsers = response.data.length;
@@ -34,7 +35,7 @@ export default function UserManagement() {
   const handleBanToggle = async (username, shouldBan) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/admin/users/${username}/toggle-status`,
+        `${API_BASE_URL}/admin/users/${username}/toggle-status`,
         {},
         {
           headers: {
@@ -54,7 +55,7 @@ export default function UserManagement() {
   const handleAdminToggle = async (userId, username) => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/users/${userId}/toggleAdmin`,
+        `${API_BASE_URL}/users/${userId}/toggleAdmin`,
         {},
         {
           headers: {
@@ -76,7 +77,7 @@ export default function UserManagement() {
     setIsSearching(true);
     try {
       const response = await axios.get(
-        `http://localhost:8080/users/username/${searchUsername.trim()}`
+        `${API_BASE_URL}/users/username/${searchUsername.trim()}`
       );
       if (response.data) {
         setUsers([response.data]);

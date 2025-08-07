@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../../config/api";
 import "./ForgotAccount.css";
 
 const ForgotAccount = () => {
@@ -8,7 +9,7 @@ const ForgotAccount = () => {
   const handleEmailSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`http://localhost:8080/forgotPassword/verifyMail/${email}`);
+      const response = await axios.post(`${API_BASE_URL}/forgotPassword/verifyMail/${email}`);
       alert(response.data);
     } catch (error) {
       alert("Error resetting password");

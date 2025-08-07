@@ -24,12 +24,14 @@ git push origin main
 ```
 
 ## 🎯 What was fixed:
+
 - ❌ Removed `env-cmd` from devDependencies
-- ❌ Removed custom build scripts that used env-cmd  
+- ❌ Removed custom build scripts that used env-cmd
 - ✅ Simplified package.json to only essential scripts
 - ✅ Uses production backend URL directly from config
 
 ## 🚀 Result:
+
 Your app now connects to `https://xcentralback.onrender.com` by default and will deploy successfully to Vercel!
 
 **No environment variables needed** - everything is configured automatically! 🎉
