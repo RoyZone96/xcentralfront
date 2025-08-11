@@ -1,5 +1,4 @@
 import axios from "axios";
-import bcrypt from "bcryptjs";
 import "./Registration.css";
 import { useState, React } from "react";
 import { useNavigate } from "react-router";
@@ -146,17 +145,14 @@ export default function Registration() {
     }
 
     try {
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      const userWithHashedPassword = {
+      const userWithRole = {
         ...user,
-        password: hashedPassword,
         role: "user",
       };
 
       await axios.post(
         `${API_BASE_URL}/users/newuser`,
-        userWithHashedPassword
+        userWithRole
       );
       alert(
         "User registered successfully! Please check your email to confirm your account."
