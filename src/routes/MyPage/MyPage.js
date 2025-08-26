@@ -1,466 +1,288 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
 import axios from "axios";
-import { Button, Form } from "react-bootstrap";
-import { Table } from "react-bootstrap";
-import { jwtDecode } from "jwt-decode";
+import { Button, Table, Form } from "react-bootstrap";
 import { API_BASE_URL } from "../../config/api";
 import "./MyPage.css";
 
-export default function AccountPage() {
-  const [submissions, setSubmissions] = useState([]);
-  const [userName, setUserName] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [profilePictureUrl, setProfilePictureUrl] = useState("");
-  const [lastUpdateTime, setLastUpdateTime] = useState({});
-  const navigate = useNavigate();
+export default function MyPage() {
+  const [userSubmissions, setUserSubmissions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
 
-  const BEYS_ON_PAGE = 10; // Number of submissions to display per page
-
-  useEffect(() => {
-    const loadUserSubmissions = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          alert("Please log in to access this page");
-          navigate("/login");
-          return;
-        }
-
-        const decodedToken = jwtDecode(token);
-        const username = decodedToken?.sub;
-        if (!username) {
-          alert("Invalid token. Please log in again.");
-          navigate("/login");
-          return;
-        }
-
-        // Check if user is admin from token (robust for array or string)
-        console.log("Decoded JWT token:", decodedToken);
-        let userRoles =
-          decodedToken.roles ||
-          decodedToken.authorities ||
-          decodedToken.role ||
-          [];
-        if (typeof userRoles === "string") {
-          userRoles = [userRoles];
-        }
-        const adminStatus = userRoles
-          .map((r) => r.toUpperCase())
-          .some((r) => r === "ADMIN" || r === "ROLE_ADMIN");
-        setIsAdmin(adminStatus);
-
-        localStorage.setItem("username", username);
-        setUserName(username);
-        console.log("Username:", username);
-        console.log("Is Admin:", adminStatus);
-
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
-        // Load user submissions
-        const response = await axios.get(
-          `${API_BASE_URL}/submissions/sublist/username/${username}`,
-          { headers }
-        );
-        const submissions = response.data;
-        if (!Array.isArray(submissions)) {
-          throw new Error("Invalid response format");
-        }
-
-        setSubmissions(submissions);
-
-        // Load profile picture if exists
-        try {
-          const profileResponse = await axios.get(
-            `${API_BASE_URL}/users/profile-picture/${username}`,
-            { headers }
-          );
-          if (profileResponse.data) {
-            // Add timestamp to prevent caching issues
-            const timestampedUrl = `${profileResponse.data}?t=${Date.now()}`;
-            setProfilePictureUrl(timestampedUrl);
-          }
-        } catch (profileError) {
-          console.log(
-            "No profile picture found or error loading profile picture"
-          );
-        }
-      } catch (error) {
-        console.error("Error loading user submissions:", error);
-        alert("Failed to load submissions");
+  // Safe token parsing function
+  const parseJwtToken = (token) => {
+    try {
+      if (!token || typeof token !== 'string') {
+        console.log('Invalid token provided:', token);
+        return null;
       }
 
-      const storedUserName = localStorage.getItem("username");
-      setUserName(storedUserName);
-    };
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        console.log('Token does not have 3 parts:', parts.length);
+        return null;
+      }
 
-    loadUserSubmissions();
-  }, [navigate]);
-
-  const handleDelete = async (id) => {
-    try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      await axios.delete(`${API_BASE_URL}/submissions/id/${id}`, {
-        headers,
-      });
-      setSubmissions(submissions.filter((submission) => submission.id !== id));
+      const payload = parts[1];
+      const decodedPayload = atob(payload);
+      const parsedPayload = JSON.parse(decodedPayload);
+      
+      return parsedPayload;
     } catch (error) {
-      console.error("Error deleting submission:", error);
-      alert("Failed to delete submission");
+      console.error('Error parsing JWT token:', error);
+      return null;
     }
   };
 
-  const handleUpdate = async (id, wins, losses) => {
+  // Safe user info extraction
+  const getUserInfoFromToken = () => {
     try {
-      if (wins < 0 || losses < 0) {
-        alert("Values cannot be less than zero");
-        return;
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.log('No token found in localStorage');
+        return null;
       }
 
-      // Find the current submission for validation
-      const currentSubmission = submissions.find((sub) => sub.id === id);
-      if (!currentSubmission) {
-        alert("Submission not found");
-        return;
+      const decodedToken = parseJwtToken(token);
+      if (!decodedToken) {
+        console.log('Failed to decode token');
+        return null;
       }
 
-      // Rate limiting: prevent rapid updates (3 seconds)
-      const now = Date.now();
-      const lastUpdate = lastUpdateTime[id] || 0;
-      if (now - lastUpdate < 3000) {
-        alert("Please wait 3 seconds between updates");
-        return;
-      }
+      // Extract user info safely
+      const userInfo = {
+        userId: decodedToken.sub || decodedToken.userId || null,
+        username: decodedToken.sub || decodedToken.username || 'Unknown',
+        email: decodedToken.email || null
+      };
 
-      // Check for large changes (flag suspicious activity)
-      const winDiff = Math.abs(wins - currentSubmission.wins);
-      const lossDiff = Math.abs(losses - currentSubmission.losses);
-      let shouldFlag = false;
-      let flagReason = "";
+      console.log('Extracted user info:', userInfo);
+      return userInfo;
+    } catch (error) {
+      console.error('Error extracting user info from token:', error);
+      return null;
+    }
+  };
 
-      if (winDiff > 5 || lossDiff > 5) {
-        shouldFlag = true;
-        flagReason = `Large change detected (+${winDiff} wins, +${lossDiff} losses)`;
-        const confirm = window.confirm(
-          `${flagReason}. Continue? This will be logged for review.`
-        );
-        if (!confirm) return;
-      }
+  useEffect(() => {
+    const loadUserData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-      // Flag high win rates
-      const totalMatches = wins + losses;
-      if (totalMatches > 10) {
-        const winRate = wins / totalMatches;
-        if (winRate > 0.9) {
-          shouldFlag = true;
-          flagReason = `High win rate detected (${(winRate * 100).toFixed(
-            1
-          )}%)`;
-          alert(`${flagReason}. This will be flagged for admin review.`);
+        // Get user info from token
+        const user = getUserInfoFromToken();
+        if (!user || !user.userId) {
+          setError('Invalid authentication. Please log in again.');
+          setLoading(false);
+          return;
         }
+
+        setUserInfo(user);
+
+        // Load user submissions
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError('No authentication token found.');
+          setLoading(false);
+          return;
+        }
+
+        const headers = { 
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        };
+
+        console.log('Loading submissions for user:', user.userId);
+        const response = await axios.get(
+          `${API_BASE_URL}/submissions/user/${user.userId}`,
+          { headers }
+        );
+
+        setUserSubmissions(response.data || []);
+      } catch (error) {
+        console.error('Error loading user submissions:', error);
+        if (error.response?.status === 401) {
+          setError('Authentication expired. Please log in again.');
+        } else if (error.response?.status === 403) {
+          setError('Access denied. Please log in again.');
+        } else {
+          setError('Failed to load submissions. Please try again.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUserData();
+  }, []);
+
+  // Safe string operations with null checks
+  const safeGetFirstChar = (str) => {
+    if (!str || typeof str !== 'string' || str.length === 0) {
+      return '';
+    }
+    return str.charAt(0);
+  };
+
+  const safeCapitalize = (str) => {
+    if (!str || typeof str !== 'string' || str.length === 0) {
+      return '';
+    }
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
+
+  // Update submission function with proper error handling
+  const updateSubmission = async (submissionId, newWins, newLosses) => {
+    try {
+      if (!userInfo?.userId) {
+        alert('Authentication error. Please log in again.');
+        return;
       }
 
       const token = localStorage.getItem("token");
-      const headers = {
+      if (!token) {
+        alert('No authentication token found. Please log in again.');
+        return;
+      }
+
+      const headers = { 
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
       };
 
-      const updatedSubmission = { wins, losses };
+      const updateData = {
+        userId: userInfo.userId,
+        wins: parseInt(newWins) || 0,
+        losses: parseInt(newLosses) || 0
+      };
+
+      console.log('Updating submission:', submissionId, updateData);
+
       await axios.put(
-        `${API_BASE_URL}/submissions/id/${id}`,
-        updatedSubmission,
+        `${API_BASE_URL}/submissions/${submissionId}`,
+        updateData,
         { headers }
       );
 
-      setSubmissions(
-        submissions.map((submission) =>
-          submission.id === id ? { ...submission, wins, losses } : submission
-        )
+      // Refresh submissions after update
+      const response = await axios.get(
+        `${API_BASE_URL}/submissions/user/${userInfo.userId}`,
+        { headers }
       );
 
-      // Update rate limiting tracker
-      setLastUpdateTime((prev) => ({ ...prev, [id]: now }));
-
-      // Flag submission if suspicious activity detected
-      if (shouldFlag) {
-        try {
-          await axios.put(
-            `${API_BASE_URL}/submissions/flag/${id}`,
-            {
-              reason: flagReason,
-              flaggedAt: new Date().toISOString(),
-              flaggedBy: userName,
-              oldValues: {
-                wins: currentSubmission.wins,
-                losses: currentSubmission.losses,
-              },
-              newValues: { wins, losses },
-            },
-            { headers }
-          );
-          console.log(`Submission ${id} flagged for review: ${flagReason}`);
-        } catch (flagError) {
-          console.error("Error flagging submission:", flagError);
-          // Don't prevent the update if flagging fails
-        }
-      }
+      setUserSubmissions(response.data || []);
+      alert('Submission updated successfully!');
     } catch (error) {
-      console.error("Error updating submission:", error);
-      if (error.response?.status === 401) {
-        alert("Authentication failed. Please login again.");
-        navigate("/login");
+      console.error('Error updating submission:', error);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        alert('Authentication expired. Please log in again.');
       } else {
-        alert("Failed to update submission");
+        alert('Failed to update submission. Please try again.');
       }
     }
   };
 
-  const handleProfilePictureUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+  if (loading) {
+    return (
+      <div className="my-page">
+        <div className="loading">Loading your submissions...</div>
+      </div>
+    );
+  }
 
-    // Check file size (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert("File size must be less than 5MB");
-      return;
-    }
-
-    // Check file type
-    if (!file.type.startsWith("image/")) {
-      alert("Please select an image file");
-      return;
-    }
-
-    try {
-      const token = localStorage.getItem("token");
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await axios.post(
-        `${API_BASE_URL}/users/${userName}/profile-image`,
-        formData,
-        {
-          headers: {
-            ...headers,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      if (response.data) {
-        // After successful upload, fetch the updated profile picture URL
-        try {
-          const profileResponse = await axios.get(
-            `${API_BASE_URL}/users/profile-picture/${userName}`,
-            { headers }
-          );
-          if (profileResponse.data) {
-            // Add timestamp to force browser to reload the image
-            const timestampedUrl = `${profileResponse.data}?t=${Date.now()}`;
-            setProfilePictureUrl(timestampedUrl);
-          }
-        } catch (fetchError) {
-          console.error("Error fetching updated profile picture:", fetchError);
-          // Still show success message even if fetch fails
-        }
-        alert("Profile picture updated successfully!");
-      }
-    } catch (error) {
-      console.error("Error uploading profile picture:", error);
-      alert("Failed to upload profile picture");
-    }
-  };
-
-  const navigateToWorkshop = () => {
-    navigate("/createPage");
-  };
-
-  const navigateToUpdatePassword = () => {
-    navigate("/updatePassword");
-  };
-
-  const navigateToUpdateEmail = () => {
-    navigate("/updateEmail");
-  };
-
-  const totalPages = Math.ceil(submissions.length / BEYS_ON_PAGE);
-  const paginatedSubmissions = submissions.slice(
-    (currentPage - 1) * BEYS_ON_PAGE,
-    currentPage * BEYS_ON_PAGE
-  );
+  if (error) {
+    return (
+      <div className="my-page">
+        <div className="error">
+          <h3>Error</h3>
+          <p>{error}</p>
+          <Button onClick={() => window.location.href = '/login'}>
+            Go to Login
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div>
-      {/* ID Card Section */}
-      <div className="id-card">
-        <div className="id-card-header">
-          <h2>X CENTRAL</h2>
-          <span className={`membership-badge ${isAdmin ? "admin-badge" : ""}`}>
-            {isAdmin ? "ADMIN" : "MEMBER"}
-          </span>
-        </div>
-        <div className="id-card-content">
-          <div className="user-info">
-            <div
-              className="user-avatar"
-              onClick={() => document.getElementById("profile-upload").click()}
-            >
-              {profilePictureUrl ? (
-                <img
-                  src={profilePictureUrl}
-                  alt="Profile"
-                  className="profile-image"
-                />
-              ) : (
-                <span className="avatar-initial">
-                  {userName.charAt(0).toUpperCase()}
-                </span>
-              )}
-              <div className="upload-overlay">
-                <span>📷</span>
-              </div>
-            </div>
-            <input
-              type="file"
-              id="profile-upload"
-              accept="image/*"
-              onChange={handleProfilePictureUpload}
-              style={{ display: "none" }}
-            />
-            <div className="user-details">
-              <h3 className="user-name">{userName}</h3>
-              <p className="user-role">
-                {isAdmin ? "🛡️ Administrator" : "👤 Standard Member"}
-              </p>
-              <p className="member-since">
-                Member Since: {new Date().getFullYear()}
-              </p>
-              <p className="member-id">ID: {userName.toUpperCase()}</p>
-            </div>
-          </div>
-          <div className="card-actions">
-            <button className="card-btn" onClick={navigateToUpdatePassword}>
-              Update Password
-            </button>
-            <button className="card-btn" onClick={navigateToUpdateEmail}>
-              Update Email
-            </button>
-            {isAdmin && (
-              <button
-                className="card-btn admin-btn"
-                onClick={() => navigate("/adminPage")}
-              >
-                Admin Panel
-              </button>
-            )}
-          </div>
-        </div>
+    <div className="my-page">
+      <div className="user-header">
+        <h2>My Submissions</h2>
+        {userInfo && (
+          <p>Welcome, {userInfo.username || 'User'}!</p>
+        )}
       </div>
-      <h2>Workshop</h2>
-      <button className="newcombo" onClick={navigateToWorkshop}>
-        Create New Combo
-      </button>
 
-      <h2>My Submissions</h2>
-      <div className="fair-play-notice">
-        <small>
-          <strong>🛡️ Fair Play:</strong> Updates are rate-limited and large
-          changes are logged for review.
-        </small>
-      </div>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Blade</th>
-            <th>Ratchet</th>
-            <th>Bit</th>
-            <th>Wins</th>
-            <th>Losses</th>
-            <th>Win Rate</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedSubmissions.map((submission) => (
-            <tr key={submission.id}>
-              <td>{submission.blade}</td>
-              <td>{submission.ratchet}</td>
-              <td>{submission.bit}</td>
-              <td>
-                <Form.Control
-                  className="input-field"
-                  type="number"
-                  value={submission.wins}
-                  min="0"
-                  onChange={(e) =>
-                    handleUpdate(
-                      submission.id,
-                      parseInt(e.target.value, 10),
-                      submission.losses
-                    )
-                  }
-                />
-              </td>
-              <td>
-                <Form.Control
-                  className="input-field"
-                  type="number"
-                  value={submission.losses}
-                  min="0"
-                  onChange={(e) =>
-                    handleUpdate(
-                      submission.id,
-                      submission.wins,
-                      parseInt(e.target.value, 10)
-                    )
-                  }
-                />
-              </td>
-              <td>
-                {submission.wins + submission.losses > 0
-                  ? `${(
-                      (submission.wins /
-                        (submission.wins + submission.losses)) *
-                      100
-                    ).toFixed(1)}%`
-                  : "0.0%"}
-              </td>
-              <td>
-                <Button
-                  variant="danger"
-                  children="Delete"
-                  className="delete-button"
-                  onClick={() => handleDelete(submission.id)}
-                >
-                  Delete
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-      {totalPages > 1 && (
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              key={i + 1}
-              className={`page-button ${currentPage === i + 1 ? "active" : ""}`}
-              onClick={() => setCurrentPage(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
+      {userSubmissions.length === 0 ? (
+        <div className="no-submissions">
+          <h3>No submissions found</h3>
+          <p>You haven't created any combo submissions yet.</p>
+          <Button href="/create-combo">Create Your First Combo</Button>
+        </div>
+      ) : (
+        <div className="submissions-table">
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Blade</th>
+                <th>Ratchet</th>
+                <th>Bit</th>
+                <th>Wins</th>
+                <th>Losses</th>
+                <th>Win Rate</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {userSubmissions.map((submission) => (
+                <tr key={submission.id || Math.random()}>
+                  <td>{submission.bladeName || submission.blade || 'N/A'}</td>
+                  <td>{submission.ratchetName || submission.ratchet || 'N/A'}</td>
+                  <td>{submission.bitName || submission.bit || 'N/A'}</td>
+                  <td>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      defaultValue={submission.wins || 0}
+                      id={`wins-${submission.id}`}
+                      style={{ width: '80px' }}
+                    />
+                  </td>
+                  <td>
+                    <Form.Control
+                      type="number"
+                      min="0"
+                      defaultValue={submission.losses || 0}
+                      id={`losses-${submission.id}`}
+                      style={{ width: '80px' }}
+                    />
+                  </td>
+                  <td>
+                    {(() => {
+                      const wins = submission.wins || 0;
+                      const losses = submission.losses || 0;
+                      const total = wins + losses;
+                      return total > 0 ? `${((wins / total) * 100).toFixed(1)}%` : '0%';
+                    })()}
+                  </td>
+                  <td>
+                    <Button
+                      size="sm"
+                      onClick={() => {
+                        const newWins = document.getElementById(`wins-${submission.id}`)?.value;
+                        const newLosses = document.getElementById(`losses-${submission.id}`)?.value;
+                        updateSubmission(submission.id, newWins, newLosses);
+                      }}
+                    >
+                      Update
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </div>
       )}
     </div>
