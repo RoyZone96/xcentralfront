@@ -28,24 +28,50 @@ export default function AccountPage() {
           return;
         }
 
+        // Debug: Let's examine the token
+        console.log("🔍 TOKEN DEBUG INFO:");
+        console.log("Raw token:", token);
+        console.log("Token length:", token.length);
+        console.log("Token type:", typeof token);
+        
+        const tokenParts = token.split(".");
+        console.log("Token parts count:", tokenParts.length);
+        console.log("Token parts:", tokenParts);
+        
+        // Check each part
+        tokenParts.forEach((part, index) => {
+          console.log(`Part ${index + 1}:`, part);
+          console.log(`Part ${index + 1} length:`, part.length);
+        });
+
         let decodedToken;
         let username;
-        
+
         try {
           // Validate token format before decoding
-          const tokenParts = token.split('.');
           if (tokenParts.length !== 3) {
-            throw new Error('Invalid token format');
+            console.error("❌ Token format invalid - expected 3 parts, got:", tokenParts.length);
+            throw new Error(`Invalid token format: expected 3 parts, got ${tokenParts.length}`);
           }
-          
+
+          console.log("✅ Token format valid, attempting to decode...");
           decodedToken = jwtDecode(token);
-          username = decodedToken?.sub || decodedToken?.username;
+          console.log("🔓 Decoded token:", decodedToken);
           
+          username = decodedToken?.sub || decodedToken?.username;
+          console.log("👤 Extracted username:", username);
+
           if (!username) {
-            throw new Error('No username found in token');
+            console.error("❌ No username found in decoded token");
+            throw new Error("No username found in token");
           }
         } catch (tokenError) {
-          console.error("Token validation error:", tokenError);
+          console.error("❌ Token validation error:", tokenError);
+          console.error("Token error details:", {
+            message: tokenError.message,
+            stack: tokenError.stack,
+            token: token.substring(0, 50) + "..." // Show first 50 chars for debugging
+          });
           alert("Invalid token. Please log in again.");
           localStorage.removeItem("token");
           localStorage.removeItem("username");
@@ -107,9 +133,12 @@ export default function AccountPage() {
         }
       } catch (error) {
         console.error("Error loading user submissions:", error);
-        
+
         // Handle specific error types
-        if (error.message?.includes('Invalid token') || error.response?.status === 401) {
+        if (
+          error.message?.includes("Invalid token") ||
+          error.response?.status === 401
+        ) {
           alert("Session expired. Please log in again.");
           localStorage.removeItem("token");
           localStorage.removeItem("username");
@@ -353,7 +382,9 @@ export default function AccountPage() {
                 />
               ) : (
                 <span className="avatar-initial">
-                  {userName && userName.length > 0 ? userName.charAt(0).toUpperCase() : "?"}
+                  {userName && userName.length > 0
+                    ? userName.charAt(0).toUpperCase()
+                    : "?"}
                 </span>
               )}
               <div className="upload-overlay">
@@ -375,7 +406,9 @@ export default function AccountPage() {
               <p className="member-since">
                 Member Since: {new Date().getFullYear()}
               </p>
-              <p className="member-id">ID: {userName ? userName.toUpperCase() : "UNKNOWN"}</p>
+              <p className="member-id">
+                ID: {userName ? userName.toUpperCase() : "UNKNOWN"}
+              </p>
             </div>
           </div>
           <div className="card-actions">
