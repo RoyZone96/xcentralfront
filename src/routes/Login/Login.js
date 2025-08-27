@@ -22,7 +22,39 @@ export default function Login() {
         `${API_BASE_URL}/users/authenticate`,
         user
       );
-      const token = response.data;
+      
+      // Debug: Let's see what the backend returns
+      console.log("🔍 LOGIN RESPONSE DEBUG:");
+      console.log("Full response.data:", response.data);
+      console.log("Response.data type:", typeof response.data);
+      console.log("Response.data keys:", Object.keys(response.data || {}));
+      
+      // Extract token correctly based on backend response structure
+      let token;
+      if (typeof response.data === 'string') {
+        // Backend returns token directly as string
+        token = response.data;
+      } else if (response.data?.token) {
+        // Backend returns object with token property
+        token = response.data.token;
+      } else if (response.data?.jwt) {
+        // Backend returns object with jwt property
+        token = response.data.jwt;
+      } else if (response.data?.accessToken) {
+        // Backend returns object with accessToken property
+        token = response.data.accessToken;
+      } else {
+        throw new Error("No valid token found in response");
+      }
+      
+      console.log("✅ Extracted token:", token);
+      console.log("Token type:", typeof token);
+      console.log("Token length:", token?.length);
+      
+      if (!token || typeof token !== 'string') {
+        throw new Error("Invalid token format received from server");
+      }
+      
       localStorage.setItem("token", token);
       // Dispatch custom event to update navigation
       window.dispatchEvent(new Event('tokenChanged'));

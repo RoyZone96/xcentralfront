@@ -34,6 +34,7 @@ export default function AccountPage() {
         console.log("Token length:", token.length);
         console.log("Token type:", typeof token);
         
+        // Validate token format before decoding
         const tokenParts = token.split(".");
         console.log("Token parts count:", tokenParts.length);
         console.log("Token parts:", tokenParts);
@@ -43,7 +44,7 @@ export default function AccountPage() {
           console.log(`Part ${index + 1}:`, part);
           console.log(`Part ${index + 1} length:`, part.length);
         });
-
+        
         let decodedToken;
         let username;
 
