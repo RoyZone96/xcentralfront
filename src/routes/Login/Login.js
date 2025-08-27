@@ -23,12 +23,6 @@ export default function Login() {
         user
       );
       
-      // Debug: Let's see what the backend returns
-      console.log("🔍 LOGIN RESPONSE DEBUG:");
-      console.log("Full response.data:", response.data);
-      console.log("Response.data type:", typeof response.data);
-      console.log("Response.data keys:", Object.keys(response.data || {}));
-      
       // Extract token correctly based on backend response structure
       let token;
       if (typeof response.data === 'string') {
@@ -46,10 +40,6 @@ export default function Login() {
       } else {
         throw new Error("No valid token found in response");
       }
-      
-      console.log("✅ Extracted token:", token);
-      console.log("Token type:", typeof token);
-      console.log("Token length:", token?.length);
       
       if (!token || typeof token !== 'string') {
         throw new Error("Invalid token format received from server");

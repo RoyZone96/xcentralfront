@@ -28,22 +28,8 @@ export default function AccountPage() {
           return;
         }
 
-        // Debug: Let's examine the token
-        console.log("🔍 TOKEN DEBUG INFO:");
-        console.log("Raw token:", token);
-        console.log("Token length:", token.length);
-        console.log("Token type:", typeof token);
-        
         // Validate token format before decoding
         const tokenParts = token.split(".");
-        console.log("Token parts count:", tokenParts.length);
-        console.log("Token parts:", tokenParts);
-        
-        // Check each part
-        tokenParts.forEach((part, index) => {
-          console.log(`Part ${index + 1}:`, part);
-          console.log(`Part ${index + 1} length:`, part.length);
-        });
         
         let decodedToken;
         let username;
@@ -51,28 +37,18 @@ export default function AccountPage() {
         try {
           // Validate token format before decoding
           if (tokenParts.length !== 3) {
-            console.error("❌ Token format invalid - expected 3 parts, got:", tokenParts.length);
             throw new Error(`Invalid token format: expected 3 parts, got ${tokenParts.length}`);
           }
 
-          console.log("✅ Token format valid, attempting to decode...");
           decodedToken = jwtDecode(token);
-          console.log("🔓 Decoded token:", decodedToken);
           
           username = decodedToken?.sub || decodedToken?.username;
-          console.log("👤 Extracted username:", username);
 
           if (!username) {
-            console.error("❌ No username found in decoded token");
             throw new Error("No username found in token");
           }
         } catch (tokenError) {
-          console.error("❌ Token validation error:", tokenError);
-          console.error("Token error details:", {
-            message: tokenError.message,
-            stack: tokenError.stack,
-            token: token.substring(0, 50) + "..." // Show first 50 chars for debugging
-          });
+          console.error("Token validation error:", tokenError.message);
           alert("Invalid token. Please log in again.");
           localStorage.removeItem("token");
           localStorage.removeItem("username");
