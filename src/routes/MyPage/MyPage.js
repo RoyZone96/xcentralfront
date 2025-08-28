@@ -99,9 +99,29 @@ export default function AccountPage() {
             { headers }
           );
           if (profileResponse.data) {
-            // Add timestamp to prevent caching issues
-            const timestampedUrl = `${profileResponse.data}?t=${Date.now()}`;
-            setProfilePictureUrl(timestampedUrl);
+            // Fetch the image as a blob with authentication
+            try {
+              const imageResponse = await axios.get(profileResponse.data, {
+                headers,
+                responseType: 'blob'
+              });
+              
+              // Create a blob URL for secure display
+              const imageBlob = imageResponse.data;
+              const imageUrl = URL.createObjectURL(imageBlob);
+              setProfilePictureUrl(imageUrl);
+              
+              // Clean up old blob URL if it exists
+              return () => {
+                if (imageUrl.startsWith('blob:')) {
+                  URL.revokeObjectURL(imageUrl);
+                }
+              };
+            } catch (imageError) {
+              console.log("Error fetching profile image blob:", imageError);
+              // Fallback: try direct URL (might work if CORS is configured)
+              setProfilePictureUrl(profileResponse.data);
+            }
           }
         } catch (profileError) {
           console.log(
@@ -301,9 +321,27 @@ export default function AccountPage() {
             { headers }
           );
           if (profileResponse.data) {
-            // Add timestamp to force browser to reload the image
-            const timestampedUrl = `${profileResponse.data}?t=${Date.now()}`;
-            setProfilePictureUrl(timestampedUrl);
+            // Fetch the image as a blob with authentication
+            try {
+              const imageResponse = await axios.get(profileResponse.data, {
+                headers,
+                responseType: 'blob'
+              });
+              
+              // Clean up old blob URL
+              if (profilePictureUrl && profilePictureUrl.startsWith('blob:')) {
+                URL.revokeObjectURL(profilePictureUrl);
+              }
+              
+              // Create new blob URL for secure display
+              const imageBlob = imageResponse.data;
+              const imageUrl = URL.createObjectURL(imageBlob);
+              setProfilePictureUrl(imageUrl);
+            } catch (imageError) {
+              console.log("Error fetching updated profile image blob:", imageError);
+              // Fallback: try direct URL
+              setProfilePictureUrl(profileResponse.data);
+            }
           }
         } catch (fetchError) {
           console.error("Error fetching updated profile picture:", fetchError);
