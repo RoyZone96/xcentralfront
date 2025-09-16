@@ -49,7 +49,6 @@ export default function Login() {
       // Dispatch custom event to update navigation
       window.dispatchEvent(new Event('tokenChanged'));
       console.log(token);
-      alert("Login successful");
       navigate("/myPage");
       window.location.reload();
     } catch (error) {

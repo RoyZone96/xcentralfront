@@ -18,7 +18,7 @@ export default function UserManagement() {
   const fetchUsers = async (page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/users/userlist`);
+      const response = await axios.get(`${API_BASE_URL}/admin/users`);
       setUsers(response.data || []);
       console.log("Users data:", response.data);
       const totalUsers = response.data.length;
