@@ -22,10 +22,10 @@ export default function Login() {
         `${API_BASE_URL}/users/authenticate`,
         user
       );
-      
+
       // Extract token correctly based on backend response structure
       let token;
-      if (typeof response.data === 'string') {
+      if (typeof response.data === "string") {
         // Backend returns token directly as string
         token = response.data;
       } else if (response.data?.token) {
@@ -40,14 +40,14 @@ export default function Login() {
       } else {
         throw new Error("No valid token found in response");
       }
-      
-      if (!token || typeof token !== 'string') {
+
+      if (!token || typeof token !== "string") {
         throw new Error("Invalid token format received from server");
       }
-      
+
       localStorage.setItem("token", token);
       // Dispatch custom event to update navigation
-      window.dispatchEvent(new Event('tokenChanged'));
+      window.dispatchEvent(new Event("tokenChanged"));
       console.log(token);
       navigate("/myPage");
       window.location.reload();

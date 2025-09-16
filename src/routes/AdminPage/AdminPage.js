@@ -37,7 +37,7 @@ export default function AdminPage() {
         navigate("/login");
       } else {
         // Fetch flagged submissions count
-        fetchFlaggedCount();
+        //fetchFlaggedCount();
       }
     } catch (e) {
       navigate("/login");
@@ -45,19 +45,19 @@ export default function AdminPage() {
     // eslint-disable-next-line
   }, []);
 
-  const fetchFlaggedCount = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const headers = { Authorization: `Bearer ${token}` };
-      const response = await axios.get(
-        `${API_BASE_URL}/admin/flagged-submissions/count`,
-        { headers }
-      );
-      setFlaggedCount(response.data.count || 0);
-    } catch (error) {
-      console.error("Error fetching flagged count:", error);
-    }
-  };
+  // const fetchFlaggedCount = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const headers = { Authorization: `Bearer ${token}` };
+  //     const response = await axios.get(
+  //       `${API_BASE_URL}/admin/flagged-submissions/count`,
+  //       { headers }
+  //     );
+  //     setFlaggedCount(response.data.count || 0);
+  //   } catch (error) {
+  //     console.error("Error fetching flagged count:", error);
+  //   }
+  // };
 
   if (!checkedAuth) return null;
   if (!isAdmin) return null;
