@@ -18,7 +18,20 @@ export default function UserManagement() {
   const fetchUsers = async (page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${API_BASE_URL}/admin/users`);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please log in to access admin features");
+        setUsers([]);
+        setTotalPages(1);
+        setLoading(false);
+        return;
+      }
+
+      const response = await axios.get(`${API_BASE_URL}/admin/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUsers(response.data || []);
       console.log("Users data:", response.data);
       const totalUsers = response.data.length;
@@ -26,6 +39,13 @@ export default function UserManagement() {
       setTotalPages(Math.ceil(totalUsers / usersPerPage));
     } catch (error) {
       console.error("Error fetching users:", error);
+      if (error.response?.status === 403) {
+        alert("Access denied. Admin privileges required.");
+      } else if (error.response?.status === 401) {
+        alert("Authentication failed. Please log in again.");
+      } else {
+        alert("Failed to fetch users. Please try again.");
+      }
       setUsers([]);
       setTotalPages(1);
     }
@@ -76,8 +96,20 @@ export default function UserManagement() {
 
     setIsSearching(true);
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Please log in to access admin features");
+        setIsSearching(false);
+        return;
+      }
+
       const response = await axios.get(
-        `${API_BASE_URL}/users/username/${searchUsername.trim()}`
+        `${API_BASE_URL}/users/username/${searchUsername.trim()}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (response.data) {
         setUsers([response.data]);
@@ -88,6 +120,10 @@ export default function UserManagement() {
       console.error("Error searching user:", error);
       if (error.response?.status === 404) {
         alert("User not found");
+      } else if (error.response?.status === 403) {
+        alert("Access denied. Admin privileges required.");
+      } else if (error.response?.status === 401) {
+        alert("Authentication failed. Please log in again.");
       } else {
         alert("Error searching for user");
       }
